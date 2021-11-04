@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Payment;
+use App\Models\PaymentSum;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,4 +43,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * リレーション users_payments hasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * リレーション users_payment_sums hasMany
+     */
+    public function paymentSum()
+    {
+        return $this->hasMany(PaymentSum::class);
+    }
 }
