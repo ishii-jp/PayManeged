@@ -17,4 +17,14 @@ class Category extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    /**
+     * DBからカテゴリーを全て取得して返します。
+     *
+     * @return object
+     */
+    public static function getCategoryAll(): object
+    {
+        return self::all();
+    }
 }
