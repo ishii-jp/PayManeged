@@ -9,6 +9,14 @@ use Illuminate\View\View;
 class PaymentController extends Controller
 {
     /**
+     * PaymentController construct
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * 支払い入力画面
      * /payment
      *
