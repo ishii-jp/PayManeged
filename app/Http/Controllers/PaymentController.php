@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -10,6 +11,8 @@ class PaymentController extends Controller
 {
     /**
      * PaymentController construct
+     *
+     * Authenticateを設定
      */
     public function __construct()
     {
@@ -33,10 +36,15 @@ class PaymentController extends Controller
      *
      * @return View
      */
-    public function confirm(Request $request): View
+    public function confirm(PaymentRequest $request): View
     {
-        // dd($request->input('payment'));
-        return view('payments.confirm')->with('categories', Category::getCategoryAll());
+        // TODO フォームリクエストバリデーションを実施
+        return view('payments.confirm')->with(
+            [
+                'categories' => Category::getCategoryAll(),
+                'payment' => $request->input('payment')
+            ]
+        );
     }
 
     /**
@@ -47,6 +55,8 @@ class PaymentController extends Controller
      */
     public function complete(): View
     {
-        //
+        // TODO DBへインサートを行う
+
+        return view('payments.complete');
     }
 }
