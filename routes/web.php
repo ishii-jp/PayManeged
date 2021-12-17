@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('payment', [PaymentController::class, 'index'])->name('payment');
-Route::post('payment/confirm', [PaymentController::class, 'confirm'])->name('payment.confirm');
-Route::post('payment/complete', [PaymentController::class, 'complete'])->name('payment.complete');
+Route::get('payment/when', [PaymentController::class, 'when'])->name('payment.when');
+Route::get('payment/{year}/{month}', [PaymentController::class, 'index'])->name('payment');
+Route::post('payment/{year}/{month}/confirm', [PaymentController::class, 'confirm'])->name('payment.confirm');
+Route::post('payment/{year}/{month}/complete', [PaymentController::class, 'complete'])->name('payment.complete');

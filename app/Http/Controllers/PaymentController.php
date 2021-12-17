@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Payment;
+use App\Models\PaymentSum;
+use App\Services\PaymentService;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class PaymentController extends Controller
@@ -20,29 +26,58 @@ class PaymentController extends Controller
     }
 
     /**
-     * 支払い入力画面
-     * /payment
+     * 支払い日時選択画面
+     * /payment/when
      *
      * @return View
      */
-    public function index(): View
+    public function when(): View
     {
-        return view('payments.index')->with('categories', Category::getCategoryAll());
+        // フォームのセレクトボックスで使う年と月の配列を生成します
+        $years = range(PaymentService::getNowYear(), '1990');
+        $months = range('1', '12');
+
+        return view('payments.when')->with(['years' => $years, 'months' => $months]);
+    }
+
+    /**
+     * 支払い入力画面
+     * /payment
+     *
+     * @param Request $request
+     * @param string $year 支払い入力する年
+     * @param string $month 支払い入力する月
+     * @return View
+     */
+    public function index(Request $request, string $year, string $month): View
+    {
+        return view('payments.index')->with(
+            [
+                'categories' => Category::getCategoryAll(),
+                'year' => $year,
+                'month' => $month
+            ]
+        );
     }
 
     /**
      * 支払い入力確認画面
      * /payment/confirm
      *
+     * @param PaymentRequest $request
+     * @param string $year 支払い入力する年
+     * @param string $month 支払い入力する月
      * @return View
      */
-    public function confirm(PaymentRequest $request): View
+    public function confirm(PaymentRequest $request, string $year, string $month): View
     {
-        // TODO フォームリクエストバリデーションを実施
         return view('payments.confirm')->with(
             [
                 'categories' => Category::getCategoryAll(),
-                'payment' => $request->input('payment')
+                'payment' => $request->input('payment'),
+                'paymentSum' => $request->input('paymentSum'),
+                'year' => $year,
+                'month' => $month
             ]
         );
     }
@@ -51,11 +86,22 @@ class PaymentController extends Controller
      * 支払い入力完了画面
      * /payment/complete
      *
+     * @param PaymentRequest $request
+     * @param string $year 支払い入力する年
+     * @param string $month 支払い入力する月
      * @return View
      */
-    public function complete(): View
+    public function complete(PaymentRequest $request, string $year, string $month): View
     {
-        // TODO DBへインサートを行う
+        try {
+            DB::transaction(function () use ($request, $year, $month) {
+                Payment::register($year, $month, Auth::id(), $request->input('payment'));
+                PaymentSum::register($year, $month, Auth::id(), $request->input('paymentSum'));
+            });
+        } catch (Exception $e) {
+            report($e);
+            return view('payments.complete')->with('errorMessage', $e->getMessage());
+        }
 
         return view('payments.complete');
     }

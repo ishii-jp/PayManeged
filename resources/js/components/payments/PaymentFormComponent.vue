@@ -94,7 +94,7 @@ export default {
     },
   },
   computed: {
-    /**Ï
+    /**
      * カテゴリーIDごとの金額の配列を作成し、配列の要素が数字か判定後Number型にキャストして合計金額を計算します。
      */
     paymentSum: function () {

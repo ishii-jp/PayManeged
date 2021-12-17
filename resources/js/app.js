@@ -21,6 +21,7 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('payment-form-component', require('./components/payments/PaymentFormComponent').default);
+Vue.component('when-form-component', require('./components/payments/WhenFormComponent').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

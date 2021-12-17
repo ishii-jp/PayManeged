@@ -7,10 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', config('app.name', 'Laravel'))</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @yield('js')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -76,6 +77,11 @@
         </nav>
 
         <main class="py-4">
+            <noscript>
+                <div class="alert alert-warning" role="alert">
+                    javascriptが有効になっていません。<br>有効になっていない場合本サイトは正常に動作しない場合があります。
+                </div>
+            </noscript>
             @yield('content')
         </main>
     </div>

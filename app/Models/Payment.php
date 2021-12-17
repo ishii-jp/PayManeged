@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +14,13 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+
+    /**
+     * 複数代入可能な属性
+     *
+     * @var array
+     */
+    protected $fillable = ['category_id', 'user_id', 'year', 'month', 'price'];
 
     /**
      * リレーション payments_users belongsTo
@@ -31,5 +36,24 @@ class Payment extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * paymentsテーブルに年度と月にすでにレコードがある場合はupdate、ない場合はcreateします。
+     *
+     * @param string $year 年度
+     * @param string $month 月
+     * @param string $userId ユーザーID
+     * @param array $values フォーム入力値
+     * @return void
+     */
+    public static function register(string $year, string $month, string $userId, array $values): void
+    {
+        foreach ($values as $categoryId => $price) {
+            self::updateOrCreate(
+                ['year' => $year, 'month' => $month, 'user_id' => $userId, 'category_id' => $categoryId],
+                ['price' => $price]
+            );
+        }
     }
 }
