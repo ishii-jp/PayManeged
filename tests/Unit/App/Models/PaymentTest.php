@@ -5,7 +5,6 @@ namespace Tests\Unit\App\Models;
 use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class PaymentTest extends TestCase
