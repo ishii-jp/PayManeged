@@ -2136,8 +2136,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2243,8 +2241,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
 //
 //
 //
@@ -38018,7 +38014,13 @@ var render = function () {
                   _c(
                     "strong",
                     { staticClass: "error", staticStyle: { color: "red" } },
-                    [_vm._v(_vm._s(_vm.errors["payment." + category.id][0]))]
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.errors["payment." + category.id][0]) +
+                          "\n                "
+                      ),
+                    ]
                   ),
                 ])
               : _vm._e(),
@@ -38076,84 +38078,82 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("form", [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "year" } }, [_vm._v("お支払い入力年度")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.year,
-                expression: "year",
-              },
-            ],
-            staticClass: "form-control",
-            attrs: { id: "year" },
-            on: {
-              change: function ($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function (o) {
-                    return o.selected
-                  })
-                  .map(function (o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.year = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-            },
-          },
-          _vm._l(_vm.parse(_vm.years), function (year, index) {
-            return _c("option", { key: index }, [_vm._v(_vm._s(year))])
-          }),
-          0
-        ),
-      ]),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "year" } }, [_vm._v("お支払い入力年度")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "year" } }, [_vm._v("お支払い入力月")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.month,
-                expression: "month",
-              },
-            ],
-            staticClass: "form-control",
-            attrs: { id: "year" },
-            on: {
-              change: function ($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function (o) {
-                    return o.selected
-                  })
-                  .map(function (o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.month = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.year,
+              expression: "year",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: { id: "year" },
+          on: {
+            change: function ($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function (o) {
+                  return o.selected
+                })
+                .map(function (o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.year = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
             },
           },
-          _vm._l(_vm.parse(_vm.months), function (month, index) {
-            return _c("option", { key: index }, [_vm._v(_vm._s(month))])
-          }),
-          0
-        ),
-      ]),
+        },
+        _vm._l(_vm.parse(_vm.years), function (year, index) {
+          return _c("option", { key: index }, [_vm._v(_vm._s(year))])
+        }),
+        0
+      ),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "year" } }, [_vm._v("お支払い入力月")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.month,
+              expression: "month",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: { id: "year" },
+          on: {
+            change: function ($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function (o) {
+                  return o.selected
+                })
+                .map(function (o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.month = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            },
+          },
+        },
+        _vm._l(_vm.parse(_vm.months), function (month, index) {
+          return _c("option", { key: index }, [_vm._v(_vm._s(month))])
+        }),
+        0
+      ),
     ]),
     _vm._v(" "),
     _c(
