@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
-use App\Models\Payment;
-use App\Models\PaymentSum;
 use App\Services\PaymentService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use TypeError;
 
@@ -102,7 +99,7 @@ class PaymentController extends Controller
                 $request->input('payment'),
                 $request->input('paymentSum')
             );
-        } catch (Exception | TypeError $e) {
+        } catch (Exception | TypeError) {
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
