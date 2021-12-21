@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\App\Models;
 
-use App\Models\Payment;
+use App\Models\PaymentSum;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class PaymentTest extends TestCase
+class PaymentSumTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,9 +23,9 @@ class PaymentTest extends TestCase
      */
     public function register_レコードがなければcreateされること()
     {
-        self::assertSame(0, count(Payment::all())); // register実行前のpaymentsテーブルの件数検証
-        Payment::register('2021', '12', '1', ['1' => '50000']);
-        self::assertSame(1, count(Payment::all())); // register実行後のpaymentsテーブルの件数検証
+        self::assertSame(0, count(PaymentSum::all())); // register実行前のPaymentSumsテーブルの件数検証
+        PaymentSum::register('2021', '12', '1', '65000');
+        self::assertSame(1, count(PaymentSum::all())); // register実行後のPaymentSumsテーブルの件数検証
     }
 
     /**
@@ -34,12 +34,12 @@ class PaymentTest extends TestCase
     public function register_同じデータの登録をした場合重複して登録されないこと()
     {
         // 1回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
-        self::assertSame(1, count(Payment::all()));
+        PaymentSum::register('2021', '12', '1', '65000');
+        self::assertSame(1, count(PaymentSum::all()));
 
         // 2回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
-        self::assertSame(1, count(Payment::all()));
+        PaymentSum::register('2021', '12', '1', '65000');
+        self::assertSame(1, count(PaymentSum::all()));
     }
 
     /**
@@ -48,14 +48,14 @@ class PaymentTest extends TestCase
     public function register_同じデータの登録をした場合updated_atの値は上書きされないこと()
     {
         // 1回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
-        $firstResult = Payment::first();
+        PaymentSum::register('2021', '12', '1', '65000');
+        $firstResult = PaymentSum::first();
         $firstCreatedAt = (new Carbon($firstResult->created_at))->toDateTimeString();
         $firstUpdatedAt = (new Carbon($firstResult->updated_at))->toDateTimeString();
 
         // 2回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
-        $secondResult = Payment::first();
+        PaymentSum::register('2021', '12', '1', '65000');
+        $secondResult = PaymentSum::first();
 
         self::assertSame($firstCreatedAt, (new Carbon($secondResult->created_at))->toDateTimeString());
         self::assertSame($firstUpdatedAt, (new Carbon($secondResult->updated_at))->toDateTimeString());
@@ -67,11 +67,11 @@ class PaymentTest extends TestCase
     public function register_別の年データの登録をした場合別のレコードとしてcreateされること()
     {
         // 1回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
+        PaymentSum::register('2021', '12', '1', '65000');
         // 2回目の実行
-        Payment::register('2020', '12', '1', ['1' => '50000']);
+        PaymentSum::register('2020', '12', '1', '65000');
 
-        self::assertSame(2, count(Payment::all()));
+        self::assertSame(2, count(PaymentSum::all()));
     }
 
     /**
@@ -80,11 +80,11 @@ class PaymentTest extends TestCase
     public function register_別の月データの登録をした場合別のレコードとしてcreateされること()
     {
         // 1回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
+        PaymentSum::register('2021', '12', '1', '65000');
         // 2回目の実行
-        Payment::register('2021', '11', '1', ['1' => '50000']);
+        PaymentSum::register('2021', '11', '1', '65000');
 
-        self::assertSame(2, count(Payment::all()));
+        self::assertSame(2, count(PaymentSum::all()));
     }
 
     /**
@@ -93,10 +93,10 @@ class PaymentTest extends TestCase
     public function register_別のユーザーIDデータの登録をした場合別のレコードとしてcreateされること()
     {
         // 1回目の実行
-        Payment::register('2021', '12', '1', ['1' => '50000']);
+        PaymentSum::register('2021', '12', '1', '65000');
         // 2回目の実行
-        Payment::register('2021', '12', '2', ['1' => '50000']);
+        PaymentSum::register('2021', '12', '2', '65000');
 
-        self::assertSame(2, count(Payment::all()));
+        self::assertSame(2, count(PaymentSum::all()));
     }
 }
