@@ -4,5 +4,5 @@
 
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い年月選択画面</div>
-    <when-form-component years='@json($years)' months='@json($months)' route="{{ config('env.DOMAIN') }}"></when-form-component>
+    <payment-when-component years='@json($years)' months='@json($months)' route="{{ config('env.DOMAIN') }}"></payment-when-component>
 @endsection
