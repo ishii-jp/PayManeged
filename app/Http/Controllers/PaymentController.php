@@ -94,12 +94,14 @@ class PaymentController extends Controller
     public function complete(PaymentRequest $request, string $year, string $month): View
     {
         try {
-            DB::transaction(function () use ($request, $year, $month) {
-                Payment::register($year, $month, Auth::id(), $request->input('payment'));
-                PaymentSum::register($year, $month, Auth::id(), $request->input('paymentSum'));
-            });
+            PaymentService::allRegister(
+                $year,
+                $month,
+                Auth::id(),
+                $request->input('payment'),
+                $request->input('paymentSum')
+            );
         } catch (Exception $e) {
-            report($e);
             return view('payments.complete')->with('errorMessage', $e->getMessage());
         }
 
