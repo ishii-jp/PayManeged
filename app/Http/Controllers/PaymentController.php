@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use TypeError;
 
 class PaymentController extends Controller
 {
@@ -101,8 +102,8 @@ class PaymentController extends Controller
                 $request->input('payment'),
                 $request->input('paymentSum')
             );
-        } catch (Exception $e) {
-            return view('payments.complete')->with('errorMessage', $e->getMessage());
+        } catch (Exception | TypeError $e) {
+            return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
         return view('payments.complete');
