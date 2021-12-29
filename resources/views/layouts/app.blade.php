@@ -68,6 +68,14 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+
+                                    <a class="dropdown-item" href="{{ route('payment.when') }}">
+                                        支払い入力
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('payment.history') }}">
+                                        支払い履歴
+                                    </a>
                                 </div>
                             </li>
                         @endguest
