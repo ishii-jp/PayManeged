@@ -15,10 +15,11 @@ class UserRepository implements UserRepositoryInterface
     public function getUserWithPaymentSum(string $userId): ?object
     {
         return User::with(['paymentSum' => function ($query) {
-            $query->orderBy('year', 'DESC')->orderBy('month', 'DESC');
+            $query->orderBy('year', 'DESC')
+                ->orderBy('month', 'DESC');
         }])
-        ->where('id', $userId)
-        ->first();
+            ->where('id', $userId)
+            ->first();
     }
 
     /**
@@ -32,9 +33,11 @@ class UserRepository implements UserRepositoryInterface
     public function getUserWithPayments(string $userId, string $year, string $month): ?object
     {
         return User::with(['payments' => function ($query) use ($year, $month) {
-            $query->where('year', $year)->where('month', $month)->orderBy('category_id', 'ASC');
+            $query->where('year', $year)
+                ->where('month', $month)
+                ->orderBy('category_id', 'ASC');
         }])
-        ->where('id', $userId)
-        ->first();
+            ->where('id', $userId)
+            ->first();
     }
 }

@@ -23,7 +23,7 @@
         <tr>
             <td>{{ $paymentSum->year }}</td>
             <td>{{ $paymentSum->month }}</td>
-            <td>{{ $paymentSum->total_price }}</td>
+            <td>¥{{ \App\Utils\FormatUtil::numberFormat($paymentSum->total_price) }}</td>
             <td>{{ $paymentSum->updated_at }}</td>
             <td>
                 <div class="btn-group" role="group">
