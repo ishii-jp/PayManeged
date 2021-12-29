@@ -12,7 +12,7 @@ class FormatUtil
      * 数値以外の値や例外発生時はnullを返します。
      *
      * @param string $num 数値文字列
-     * @return string|null
+     * @return string|null フォーマット後の文字列
      */
     public static function numberFormat(string $num): ?string
     {
