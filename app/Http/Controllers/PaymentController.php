@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
 use App\Repositories\User\UserRepositoryInterface AS User;
-use App\Mail\Payment\Notification;
-use Illuminate\Support\Facades\Mail;
 use App\Events\InputPaymentCompleted;
 
 class PaymentController extends Controller
