@@ -129,8 +129,10 @@ class PaymentController extends Controller
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
-        // メール送信
-        // 検証用のアドレスが設定されている環境の場合はダミーへ送信します
+        /**
+         * メール送信
+         * 検証用のアドレスが設定されている環境の場合はダミーへ送信する様、第一引数に値を渡しています
+         */
         InputPaymentCompleted::dispatch(
             config('mail.dummyAddress', $request->user()->email),
             $request->user()->name,
