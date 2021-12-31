@@ -133,7 +133,15 @@ class PaymentController extends Controller
         }
 
         try {
-            Mail::to($request->user()->email)->send(new Notification());
+            // 検証用のアドレスへ送信します
+            Mail::to(config('mail.dummyAddress', $request->user()->email))->send(new Notification(
+                $request->user()->name,
+                $year,
+                $month,
+                $request->input('payment'),
+                $request->input('paymentSum'))
+            );
+            // Mail::to($request->user()->email)->send(new Notification());
         } catch (Exception $e) {
             report($e);
         }

@@ -11,14 +11,24 @@ class Notification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $name;
+    public string $year;
+    public string $month;
+    public array $payments;
+    public string $paymentSum;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name, $year, $month, $payments, $paymentSum)
     {
-        //
+        $this->name = $name;
+        $this->year = $year;
+        $this->month = $month;
+        $this->payments = $payments;
+        $this->paymentSum = $paymentSum;
     }
 
     /**
@@ -28,6 +38,6 @@ class Notification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.payments.notification');
+        return $this->subject('支払い結果通知')->view('emails.payments.notification');
     }
 }
