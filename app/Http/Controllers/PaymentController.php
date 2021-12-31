@@ -13,6 +13,7 @@ use TypeError;
 use App\Repositories\User\UserRepositoryInterface AS User;
 use App\Mail\Payment\Notification;
 use Illuminate\Support\Facades\Mail;
+use App\Events\InputPaymentCompleted;
 
 class PaymentController extends Controller
 {
@@ -132,18 +133,16 @@ class PaymentController extends Controller
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
-        try {
-            // 検証用のアドレスが設定されている環境の場合はダミーへ送信します
-            Mail::to(config('mail.dummyAddress', $request->user()->email))->send(new Notification(
-                $request->user()->name,
-                $year,
-                $month,
-                $request->input('payment'),
-                $request->input('paymentSum'))
-            );
-        } catch (Exception $e) {
-            report($e);
-        }
+        // メール送信
+        // 検証用のアドレスが設定されている環境の場合はダミーへ送信します
+        InputPaymentCompleted::dispatch(
+            config('mail.dummyAddress', $request->user()->email),
+            $request->user()->name,
+            $year,
+            $month,
+            $request->input('payment'),
+            $request->input('paymentSum')
+        );
 
         return view('payments.complete');
     }
