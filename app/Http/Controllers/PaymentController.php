@@ -133,7 +133,7 @@ class PaymentController extends Controller
         }
 
         try {
-            // 検証用のアドレスへ送信します
+            // 検証用のアドレスが設定されている環境の場合はダミーへ送信します
             Mail::to(config('mail.dummyAddress', $request->user()->email))->send(new Notification(
                 $request->user()->name,
                 $year,
@@ -141,7 +141,6 @@ class PaymentController extends Controller
                 $request->input('payment'),
                 $request->input('paymentSum'))
             );
-            // Mail::to($request->user()->email)->send(new Notification());
         } catch (Exception $e) {
             report($e);
         }
