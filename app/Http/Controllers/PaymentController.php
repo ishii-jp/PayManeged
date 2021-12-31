@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
 use App\Repositories\User\UserRepositoryInterface AS User;
+use App\Mail\Payment\Notification;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -128,6 +130,12 @@ class PaymentController extends Controller
             );
         } catch (Exception | TypeError) {
             return view('payments.complete')->with('errorMessage', config('message.compError'));
+        }
+
+        try {
+            Mail::to($request->user()->email)->send(new Notification());
+        } catch (Exception $e) {
+            report($e);
         }
 
         return view('payments.complete');
