@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
 use App\Services\PaymentService;
@@ -70,12 +69,11 @@ class PaymentController extends Controller
      * 支払い入力画面
      * /payment
      *
-     * @param Request $request
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
      */
-    public function index(Request $request, string $year, string $month): View
+    public function index(string $year, string $month): View
     {
         return view('payments.index')->with(
             [
