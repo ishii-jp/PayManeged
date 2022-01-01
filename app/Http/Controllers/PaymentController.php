@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
 use App\Services\PaymentService;
@@ -10,6 +9,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
+use App\Repositories\User\UserRepositoryInterface AS User;
+use App\Events\InputPaymentCompleted;
 
 class PaymentController extends Controller
 {
@@ -21,6 +22,32 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    /**
+     * 支払い履歴画面
+     * /payment/history
+     *
+     * @param User $user メソッドインジェクション
+     * @return View
+     */
+    public function history(User $user): View
+    {
+        return view('payments.history')->with('users', $user->getUserWithPaymentSum(Auth::id()));
+    }
+
+    /**
+     * 支払い履歴詳細画面
+     * /payment/history/detail
+     *
+     * @param User $user メソッドインジェクション
+     * @param string $year 支払い入力する年
+     * @param string $month 支払い入力する月
+     * @return View
+     */
+    public function detail(User $user, string $year, string $month): View
+    {
+        return view('payments.detail')->with('users', $user->getUserWithPayments(Auth::id(), $year, $month));
     }
 
     /**
@@ -42,12 +69,11 @@ class PaymentController extends Controller
      * 支払い入力画面
      * /payment
      *
-     * @param Request $request
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
      */
-    public function index(Request $request, string $year, string $month): View
+    public function index(string $year, string $month): View
     {
         return view('payments.index')->with(
             [
@@ -102,6 +128,19 @@ class PaymentController extends Controller
         } catch (Exception | TypeError) {
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
+
+        /**
+         * メール送信
+         * 検証用のアドレスが設定されている環境の場合はダミーへ送信する様、第一引数に値を渡しています
+         */
+        InputPaymentCompleted::dispatch(
+            config('mail.dummyAddress', $request->user()->email),
+            $request->user()->name,
+            $year,
+            $month,
+            $request->input('payment'),
+            $request->input('paymentSum')
+        );
 
         return view('payments.complete');
     }
