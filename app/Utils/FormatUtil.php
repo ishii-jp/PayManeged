@@ -16,7 +16,7 @@ class FormatUtil
      */
     public static function numberFormat(string $num): ?string
     {
-        if(!is_numeric($num)) {
+        if(!ctype_digit($num)) {
             return null;
         }
 
