@@ -10,8 +10,10 @@ use App\Utils\FormatUtil;
     {{ Category::getCategoryName($category_id) }} ： ¥{{ FormatUtil::numberFormat($payment) }}<br>
 @endforeach
 
-合計 ¥{{ FormatUtil::numberFormat($paymentSum) }}<br>
+変動費の合計金額 ¥{{ FormatUtil::numberFormat($paymentSum) }}<br>
 
 固定費 ¥{{ FormatUtil::numberFormat(config('const.fixed_cost')) }}<br>
 
-1人あたり支払い金額合計 ¥{{ FormatUtil::numberFormat($calcResult) }}
+変動費と固定費の合計金額 ¥{{ FormatUtil::numberFormat(($totalAmount)) }}<br>
+
+1人あたり支払い合計金額 ¥{{ FormatUtil::numberFormat($calcResult) }}

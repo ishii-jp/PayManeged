@@ -36,6 +36,7 @@ class SendEmailNotification
                 $event->month,
                 $event->payments,
                 $event->paymentSum,
+                $event->totalAmount,
                 $event->calcResult
                 )
             );

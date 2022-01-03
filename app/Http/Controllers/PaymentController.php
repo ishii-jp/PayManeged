@@ -129,9 +129,10 @@ class PaymentController extends Controller
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
-        $calcResult = PaymentService::calcPayPerPerson(
-            PaymentService::calcPaySum($request->input('paymentSum'), config('const.fixed_cost'))
-        );
+        // 変動費(入力値)と固定費の合計を計算
+        $totalAmount = PaymentService::calcPaySum($request->input('paymentSum'), config('const.fixed_cost'));
+        // 1人あたりの支払い金額を計算
+        $calcResult = PaymentService::calcPayPerPerson($totalAmount);
 
         /**
          * メール送信
@@ -144,6 +145,7 @@ class PaymentController extends Controller
             $month,
             $request->input('payment'),
             $request->input('paymentSum'),
+            $totalAmount,
             $calcResult
         );
 

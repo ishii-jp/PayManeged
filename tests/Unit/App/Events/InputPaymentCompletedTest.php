@@ -22,7 +22,9 @@ class InputPaymentCompletedTest extends TestCase
             'test-year',
             'test-month',
             ['test-payment1', 'test-payment2'],
-            'test-paymentSum'
+            'test-paymentSum',
+            'test-totalAmount',
+            'calcResult'
         );
 
         Event::assertDispatched(InputPaymentCompleted::class); // ディスパッチされたことを検証
