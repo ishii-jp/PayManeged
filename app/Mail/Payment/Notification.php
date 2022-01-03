@@ -21,7 +21,8 @@ class Notification extends Mailable
         public string $year,
         public string $month,
         public array $payments,
-        public string $paymentSum
+        public string $paymentSum,
+        public ?string $calcResult
     ) {}
 
     /**

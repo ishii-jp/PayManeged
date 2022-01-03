@@ -35,7 +35,8 @@ class SendEmailNotification
                 $event->year,
                 $event->month,
                 $event->payments,
-                $event->paymentSum
+                $event->paymentSum,
+                $event->calcResult
                 )
             );
         } catch (Exception $e) {

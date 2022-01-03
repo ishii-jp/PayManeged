@@ -52,4 +52,45 @@ class PaymentService
             throw $e;
         }
     }
+
+
+    /**
+     * $num人当たりの支払い金額を計算して返します
+     *
+     * @param string|null $paymentSum　支払い合計金額
+     * @param string $num 割りたい人数 デフォルト：2
+     * @return string|null $number人当たりの支払い金額 小数点以下切り上げ
+     */
+    public static function calcPayPerPerson(?string $paymentSum, string $num = '2'): ?string
+    {
+        if (is_null($paymentSum)) {
+            return null;
+        }
+
+        if (is_numeric($num)) {
+            return ceil($paymentSum / $num);
+        }
+        
+        return null;
+    }
+
+    /**
+     * 支払い合計金額を計算して返します
+     *
+     * @param string|null $paymentSum 支払い合計金額
+     * @param string|null $fixedCost 固定費 初期値null
+     * @return string|null 支払い金額と固定費の合計金額
+     */
+    public static function calcPaySum(?string $paymentSum, ?string $fixedCost = null): ?string
+    {
+        if (is_null($paymentSum)) {
+            return null;
+        }
+
+        if (is_null($fixedCost)) {
+            return $paymentSum;
+        }
+
+        return $paymentSum + $fixedCost;
+    }
 }

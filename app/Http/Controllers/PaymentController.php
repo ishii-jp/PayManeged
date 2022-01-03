@@ -129,6 +129,10 @@ class PaymentController extends Controller
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
+        $calcResult = PaymentService::calcPayPerPerson(
+            PaymentService::calcPaySum($request->input('paymentSum'), config('const.fixed_cost'))
+        );
+
         /**
          * メール送信
          * 検証用のアドレスが設定されている環境の場合はダミーへ送信する様、第一引数に値を渡しています
@@ -139,7 +143,8 @@ class PaymentController extends Controller
             $year,
             $month,
             $request->input('payment'),
-            $request->input('paymentSum')
+            $request->input('paymentSum'),
+            $calcResult
         );
 
         return view('payments.complete');
