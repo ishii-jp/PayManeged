@@ -1,6 +1,6 @@
 @php
-use App\Models\Category;
-use App\Utils\FormatUtil;
+    use App\Models\Category;
+    use App\Utils\FormatUtil;
 @endphp
 
 {{ $name }}さんの支払い入力結果<br>

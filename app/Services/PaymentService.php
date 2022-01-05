@@ -57,7 +57,7 @@ class PaymentService
     /**
      * $num人当たりの支払い金額を計算して返します
      *
-     * @param string|null $paymentSum　支払い合計金額
+     * @param string|null $paymentSum 支払い合計金額
      * @param string $num 割りたい人数 デフォルト：2
      * @return string|null $number人当たりの支払い金額 小数点以下切り上げ
      */
@@ -70,7 +70,7 @@ class PaymentService
         if (is_numeric($num)) {
             return ceil($paymentSum / $num);
         }
-        
+
         return null;
     }
 

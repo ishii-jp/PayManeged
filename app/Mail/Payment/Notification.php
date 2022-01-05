@@ -17,14 +17,16 @@ class Notification extends Mailable
      * @return void
      */
     public function __construct(
-        public string $name,
-        public string $year,
-        public string $month,
-        public array $payments,
-        public string $paymentSum,
+        public string  $name,
+        public string  $year,
+        public string  $month,
+        public array   $payments,
+        public string  $paymentSum,
         public ?string $totalAmount,
         public ?string $calcResult
-    ) {}
+    )
+    {
+    }
 
     /**
      * Build the message.

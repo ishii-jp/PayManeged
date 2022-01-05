@@ -33,7 +33,7 @@ class UserRepositoryTest extends TestCase
         // 検証用usersテーブルとリレーションのレコードを作成し値を変数へ
         $user = User::factory()->has(PaymentSum::factory())->create();
         $facPaymentSum = $user->paymentSum->toArray();
-    
+
         // メソッドの返り値を変数へ
         $result = $this->userRepository->getUserWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
@@ -53,7 +53,7 @@ class UserRepositoryTest extends TestCase
     public function getUserWithPaymentSum_paymentSumリレーションがyear降順ソートされていること()
     {
         $user = User::factory()->has(PaymentSum::factory()->count(3))->create();
-    
+
         $result = $this->userRepository->getUserWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
 
@@ -68,7 +68,7 @@ class UserRepositoryTest extends TestCase
     {
         // monthの検証のためyearを指定してfactory作成
         $user = User::factory()->has(PaymentSum::factory(['year' => '2022'])->count(3))->create();
-    
+
         $result = $this->userRepository->getUserWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
 
@@ -109,7 +109,7 @@ class UserRepositoryTest extends TestCase
         // 検証用usersテーブルとリレーションのレコードを作成し値を変数へ
         $user = User::factory()->has(Payment::factory(['user_id' => '1', 'year' => '2020', 'month' => '1'])->count(3))->create();
         $facPayments = $user->payments->toArray();
-    
+
         $result = $this->userRepository->getUserWithPayments(
             $user->id,
             Arr::get($facPayments, '0.year'),

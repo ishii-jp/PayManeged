@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
-use App\Repositories\User\UserRepositoryInterface AS User;
+use App\Repositories\User\UserRepositoryInterface as User;
 use App\Events\InputPaymentCompleted;
 
 class PaymentController extends Controller

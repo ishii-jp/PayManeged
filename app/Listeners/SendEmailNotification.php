@@ -24,20 +24,20 @@ class SendEmailNotification
     /**
      * Handle the event.
      *
-     * @param  InputPaymentCompleted  $event
+     * @param InputPaymentCompleted $event
      * @return void
      */
     public function handle(InputPaymentCompleted $event)
     {
         try {
             Mail::to($event->email)->send(new Notification(
-                $event->name,
-                $event->year,
-                $event->month,
-                $event->payments,
-                $event->paymentSum,
-                $event->totalAmount,
-                $event->calcResult
+                    $event->name,
+                    $event->year,
+                    $event->month,
+                    $event->payments,
+                    $event->paymentSum,
+                    $event->totalAmount,
+                    $event->calcResult
                 )
             );
         } catch (Exception $e) {

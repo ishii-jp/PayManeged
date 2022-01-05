@@ -61,7 +61,7 @@ class CategoryTest extends TestCase
         $id = '1';
         $categoryName = 'test category 1';
         Category::factory()->create(['id' => $id, 'name' => $categoryName]);
-        
+
         self::assertSame($categoryName, Category::getCategoryName($id));
     }
 }

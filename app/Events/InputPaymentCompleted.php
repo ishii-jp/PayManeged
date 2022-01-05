@@ -20,15 +20,17 @@ class InputPaymentCompleted
      * @return void
      */
     public function __construct(
-        public string $email,
-        public string $name,
-        public string $year,
-        public string $month,
-        public array $payments,
-        public string $paymentSum,
+        public string  $email,
+        public string  $name,
+        public string  $year,
+        public string  $month,
+        public array   $payments,
+        public string  $paymentSum,
         public ?string $totalAmount,
         public ?string $calcResult
-    ) {}
+    )
+    {
+    }
 
     /**
      * Get the channels the event should broadcast on.
