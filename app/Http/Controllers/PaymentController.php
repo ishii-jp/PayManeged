@@ -139,7 +139,7 @@ class PaymentController extends Controller
          * 検証用のアドレスが設定されている環境の場合はダミーへ送信する様、第一引数に値を渡しています
          */
         InputPaymentCompleted::dispatch(
-            config('mail.dummyAddress', $request->user()->email),
+            config('mail.dummyAddress') ?? $request->user()->email,
             $request->user()->name,
             $year,
             $month,
