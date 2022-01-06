@@ -115,5 +115,5 @@ return [
         ],
     ],
 
-    'dummyAddress' => env('MAIL_DUMMY_ADRESS')
+    'dummyAddress' => env('MAIL_DUMMY_ADDRESS')
 ];
