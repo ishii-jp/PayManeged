@@ -131,8 +131,6 @@ class PaymentController extends Controller
 
         // 変動費(入力値)と固定費の合計を計算
         $totalAmount = PaymentService::calcPaySum($request->input('paymentSum'), config('const.fixed_cost'));
-        // 1人あたりの支払い金額を計算
-        $calcResult = PaymentService::calcPayPerPerson($totalAmount);
 
         /**
          * メール送信
@@ -146,7 +144,7 @@ class PaymentController extends Controller
             $request->input('payment'),
             $request->input('paymentSum'),
             $totalAmount,
-            $calcResult
+            PaymentService::calcPayPerPerson($totalAmount) // 1人あたりの支払い金額を計算
         );
 
         return view('payments.complete');
