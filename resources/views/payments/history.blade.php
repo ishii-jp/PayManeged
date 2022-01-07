@@ -42,6 +42,7 @@
                                 </a>
                             </div>
                         </div>
+                    </td>
                 </tr>
                 </tbody>
             @endforeach
