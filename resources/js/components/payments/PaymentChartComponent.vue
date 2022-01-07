@@ -58,7 +58,7 @@ export default {
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Year'
+                            labelString: 'month'
                         }
                     }],
                     yAxes: [{

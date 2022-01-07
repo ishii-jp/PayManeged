@@ -4,7 +4,8 @@
 
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い履歴画面</div>
-    <span>グラフ表示は<a href="{{ route('payment.history.graph') }}">こちら</a></span>
+    <span>現在年度のグラフ表示は<a href="{{ route('payment.history.graph') }}">こちら</a></span>
+    <p>グラフ表示したい年度をクリックすることでその年をグラフ表示できます。</p>
     @empty($users)
         @include('elements.alert', ['errorMessage' => '支払い履歴の取得に失敗しました'])
     @else
@@ -21,7 +22,11 @@
             @foreach($users->paymentSum as $paymentSum)
                 <tbody>
                 <tr>
-                    <td>{{ $paymentSum->year }}</td>
+                    <td>
+                        <a href="{{ route('payment.history.graph') }}?year={{ $paymentSum->year }}">
+                            {{ $paymentSum->year }}
+                        </a>
+                    </td>
                     <td>{{ $paymentSum->month }}</td>
                     <td>¥{{ \App\Utils\FormatUtil::numberFormat($paymentSum->total_price) }}</td>
                     <td>{{ $paymentSum->updated_at }}</td>

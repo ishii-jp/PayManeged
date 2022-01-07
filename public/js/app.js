@@ -2131,7 +2131,7 @@ __webpack_require__.r(__webpack_exports__);
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Year'
+              labelString: 'month'
             }
           }],
           yAxes: [{
