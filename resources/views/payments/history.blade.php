@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い履歴画面</div>
-
+    <span>グラフ表示は<a href="{{ route('payment.history.graph') }}">こちら</a></span>
     @empty($users)
         @include('elements.alert', ['errorMessage' => '支払い履歴の取得に失敗しました'])
     @else

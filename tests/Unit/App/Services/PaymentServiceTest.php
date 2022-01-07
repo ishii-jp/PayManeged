@@ -189,6 +189,47 @@ class PaymentServiceTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function getMonthlyPaymentSum_空のコレクションが引数に渡された場合返り値配列の要素が全て0になっていること()
+    {
+        $argObj = PaymentSum::all();
+        $expected = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        
+        self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj));
+    }
+
+    /**
+     * @test
+     */
+    public function getMonthlyPaymentSum_返り値配列の要素が入力されていない月は0がセットされていること()
+    {
+        $price = 50000;
+        PaymentSum::factory()->create(['month' => '7', 'total_price' => '50000']);
+        $argObj = PaymentSum::all();
+        $expected = [0, 0, 0, 0, 0, 0, $price, 0, 0, 0, 0, 0];
+
+        self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj));
+    }
+
+    /**
+     * @test
+     */
+    public function getMonthlyPaymentSum_12ヶ月分全てデータがある場合返り値配列の要素全てにデータが入っていること()
+    {
+        $price = 50000;
+        for ($n = 1; $n < 13; $n++) {
+            PaymentSum::factory()->create(['month' => $n, 'total_price' => $price]);
+            $price++;
+        }
+
+        $argObj = PaymentSum::all();
+        $expected = [50000, 50001, 50002, 50003, 50004, 50005, 50006, 50007, 50008, 50009, 50010, 50011];
+
+        self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj));
+    }
+
 //    /**
 //     * @test
 //     * @throws Exception

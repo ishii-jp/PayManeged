@@ -41,7 +41,8 @@ class PaymentService
         ?string $userId,
         ?array  $payment,
         ?string $paymentSum
-    ): void {
+    ): void
+    {
         try {
             DB::transaction(function () use ($year, $month, $userId, $payment, $paymentSum) {
                 Payment::register($year, $month, $userId, $payment);
@@ -92,5 +93,30 @@ class PaymentService
         }
 
         return $paymentSum + $fixedCost;
+    }
+
+    /**
+     * 1月から12月の順番で12ヶ月分セットした配列を返します
+     * 未入力でデータがpaymentSumsに入っていない月は0をセットします。
+     *
+     * @param object $paymentSums 任意の年のpayment_sums配列
+     * @return array 12ヶ月分の配列
+     */
+    public static function getMonthlyPaymentSum(object $paymentSums): array
+    {
+        $monthlyCollect = collect([]);
+
+        for ($num = 1; $num < 13; $num++) {
+            if ($paymentSums->contains('month', $num)) {
+                $price = $paymentSums->where('month', $num)->map(function ($item) {
+                    return $item->total_price;
+                });
+                $monthlyCollect->push($price->shift());
+            } else {
+                $monthlyCollect->push(0);
+            }
+        }
+
+        return $monthlyCollect->toArray();
     }
 }

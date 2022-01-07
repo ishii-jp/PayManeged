@@ -23,6 +23,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('payment/history', [PaymentController::class, 'history'])->name('payment.history');
+Route::get('payment/history/graph', [PaymentController::class, 'graph'])->name('payment.history.graph');
 Route::get('payment/history/detail/{year}/{month}', [PaymentController::class, 'detail'])->name('payment.detail');
 Route::get('payment/when', [PaymentController::class, 'when'])->name('payment.when');
 Route::get('payment/{year}/{month}', [PaymentController::class, 'index'])->name('payment');

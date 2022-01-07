@@ -8,15 +8,23 @@ class UserRepository implements UserRepositoryInterface
 {
     /**
      * 指定したユーザー情報をpaymentSumリレーションを一緒に取得します
+     * なお、第二引数に年を指定した場合は指定した年のpaymentSumを一緒に取得します
      *
      * @param string $userId 取得したいユーザーID
+     * @param string $year 取得したい年
      * @return object|null
      */
-    public function getUserWithPaymentSum(string $userId): ?object
+    public function getUserWithPaymentSum(string $userId, string $year = ''): ?object
     {
-        return User::with(['paymentSum' => function ($query) {
-            $query->orderBy('year', 'DESC')
-                ->orderBy('month', 'DESC');
+        return User::with(['paymentSum' => function ($query) use ($year) {
+            if ($year === '') {
+                $query->orderBy('year', 'DESC')
+                    ->orderBy('month', 'DESC');
+            } else {
+                $query->where('year', $year)
+                    ->orderBy('year', 'DESC')
+                    ->orderBy('month', 'DESC');
+            }
         }])
             ->where('id', $userId)
             ->first();

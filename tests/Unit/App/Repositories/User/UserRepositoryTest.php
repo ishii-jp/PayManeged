@@ -79,6 +79,30 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function getUserWithPaymentSum_第2引数が指定されている場合指定された年のpaymentSumが取得できていること()
+    {
+        $year = '2022';
+        $num = 2;
+        $user = User::factory()->has(PaymentSum::factory(['year' => $year])->count($num))->create();
+
+        $result = $this->userRepository->getUserWithPaymentSum($user->id, $year);
+        $this->assertSame($num, $result->paymentSum->count());
+    }
+
+    /**
+     * @test
+     */
+    public function getUserWithPaymentSum_第2引数が指定されるかつ指定された年がDBに存在しない場合空のコレクションが返ってくること()
+    {
+        $user = User::factory()->has(PaymentSum::factory()->count(10))->create();
+
+        $result = $this->userRepository->getUserWithPaymentSum($user->id, '100');
+        $this->assertSame(0, $result->paymentSum->count());
+    }
+
+    /**
+     * @test
+     */
     public function getUserWithPayments_指定したid_year_monthのusersテーブルとpaymentsリレーションの値が取得できること()
     {
         $user = User::factory()->has(Payment::factory()->count(3))->create();
