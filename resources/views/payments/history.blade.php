@@ -5,7 +5,7 @@
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い履歴画面</div>
     <span>現在年度のグラフ表示は<a href="{{ route('payment.history.graph') }}">こちら</a></span>
-    <p>グラフ表示したい年度をクリックすることでその年をグラフ表示できます。</p>
+    <p>グラフ表示したい年度をクリックすることで、<br>クリックした年のグラフ表示できます。</p>
     @empty($users)
         @include('elements.alert', ['errorMessage' => '支払い履歴の取得に失敗しました'])
     @else
