@@ -11,7 +11,6 @@ export default {
                 datasets: [
                     {
                         label: '月々の合計支払い金額',
-                        // data: [50000, 100000, 30000, 40000, 50000, 30000, 90000],
                         data: this.chartdata,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -43,6 +42,7 @@ export default {
                         ],
                         borderWidth: 1
                     }
+                    // 線グラフ表示
                     // {
                     //     label: 'Line Dataset',
                     //     data: [100000, 50000, 20000, 30000, 30000, 40000],
@@ -80,11 +80,6 @@ export default {
             type: Array,
             default: null
         }
-    },
-    methods: {
-        parse: function (value) {
-            return JSON.parse(value);
-        },
     },
     mounted() {
         this.renderChart(this.data, this.options)
