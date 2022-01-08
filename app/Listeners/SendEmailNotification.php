@@ -41,6 +41,7 @@ class SendEmailNotification
                 )
             );
         } catch (Exception $e) {
+            logger("Send mail failed. mail to {$event->email}");
             report($e);
         }
     }
