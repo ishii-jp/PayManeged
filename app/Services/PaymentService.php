@@ -99,7 +99,7 @@ class PaymentService
      * 1月から12月の順番で12ヶ月分セットした配列を返します
      * 未入力でデータがpaymentSumsに入っていない月は0をセットします。
      *
-     * @param object $paymentSums 任意の年のpayment_sums配列
+     * @param object $paymentSums 任意の年のpayment_sumsコレクション
      * @return array 12ヶ月分の配列
      */
     public static function getMonthlyPaymentSum(object $paymentSums): array
