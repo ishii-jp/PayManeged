@@ -6,6 +6,7 @@ use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
 use App\Services\PaymentService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
@@ -37,6 +38,21 @@ class PaymentController extends Controller
     }
 
     /**
+     * 支払い履歴グラフ画面
+     * /payment/history/graph
+     *
+     * @param Request $request
+     * @param User $user
+     * @return View
+     * @todo クエリパラメーターのバリデートを行う
+     */
+    public function graph(Request $request, User $user): View
+    {
+        $reqUsers = $user->getUserWithPaymentSum(Auth::id(), $request->query('year') ?? PaymentService::getNowYear());
+        return view('payments.history_graph')->with('paymentSumList', PaymentService::getMonthlyPaymentSum($reqUsers->paymentSum));
+    }
+
+    /**
      * 支払い履歴詳細画面
      * /payment/history/detail
      *
@@ -44,6 +60,7 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
+     * @todo パスパラメータのバリデートを行う
      */
     public function detail(User $user, string $year, string $month): View
     {
