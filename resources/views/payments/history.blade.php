@@ -37,8 +37,10 @@
                                 メニュー
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item"
-                                   href="{{ route('payment.detail', ['year' => $paymentSum->year, 'month' => $paymentSum->month]) }}">
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ route('payment.detail', ['year' => $paymentSum->year, 'month' => $paymentSum->month]) }}"
+                                >
                                     詳細
                                 </a>
                                 <a class="dropdown-item" href="#">
