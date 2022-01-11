@@ -47,6 +47,15 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+        /**
+         * ルートパラメータのグローバル制約を定義
+         * 
+         * 許容範囲
+         * year: 1999 ~ 2999 month: 1 ~ 12
+         */
+        Route::pattern('year', '[1-2][0-9][0-9][0-9]');
+        Route::pattern('month', '([1-9]|1[0-2])');
     }
 
     /**

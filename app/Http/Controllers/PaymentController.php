@@ -60,7 +60,6 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
-     * @todo パスパラメータのバリデートを行う
      */
     public function detail(User $user, string $year, string $month): View
     {
