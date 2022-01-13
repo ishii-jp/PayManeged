@@ -54,8 +54,8 @@ class RouteServiceProvider extends ServiceProvider
          * 許容範囲
          * year: 1999 ~ 2999 month: 1 ~ 12
          */
-        Route::pattern('year', '[1-2][0-9][0-9][0-9]');
-        Route::pattern('month', '([1-9]|1[0-2])');
+        Route::pattern('year', config('match.paramYear'));
+        Route::pattern('month', config('match.paramMonth'));
     }
 
     /**
