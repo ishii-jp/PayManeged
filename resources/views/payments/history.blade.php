@@ -23,7 +23,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        <a href="{{ route('payment.history.graph') }}?year={{ $paymentSum->year }}">
+                        <a href="{{ route('payment.history.graph', ['year' => $paymentSum->year]) }}">
                             {{ $paymentSum->year }}
                         </a>
                     </td>
