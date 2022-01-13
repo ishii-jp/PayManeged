@@ -19,10 +19,12 @@ class PaymentController extends Controller
      * PaymentController construct
      *
      * Authenticateを設定
+     * グラフ画面のみクエリパラメーターをバリデートします
      */
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('paramYearValid')->only(['graph']);
     }
 
     /**
@@ -44,7 +46,6 @@ class PaymentController extends Controller
      * @param Request $request
      * @param User $user
      * @return View
-     * @todo クエリパラメーターのバリデートを行う
      */
     public function graph(Request $request, User $user): View
     {
