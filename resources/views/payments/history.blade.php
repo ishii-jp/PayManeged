@@ -32,8 +32,14 @@
                     <td>{{ $paymentSum->updated_at }}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button
+                                id="btnGroupDrop1"
+                                type="button"
+                                class="btn btn-primary dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
                                 メニュー
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
