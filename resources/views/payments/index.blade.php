@@ -15,6 +15,7 @@
         :old="{{ json_encode(Session::getOldInput()) }}"
         :errors="{{ $errors }}"
     ></payment-form-component>
-    <button type="button" class="btn btn-primary" onclick="locationHref('{{ route('payment.when') }}');">年月選択へ戻る
+    <button type="button" class="btn btn-primary" onclick="locationHref('{{ route('payment.when') }}');">
+        年月選択へ戻る
     </button>
 @endsection
