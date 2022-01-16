@@ -8,7 +8,6 @@
 
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い入力確認画面</div>
-
     <form action="{{ route('payment.complete', ['year' => $year, 'month' => $month]) }}" method="POST">
         @csrf
         @foreach($categories as $category)
