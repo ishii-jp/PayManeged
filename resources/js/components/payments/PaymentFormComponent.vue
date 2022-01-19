@@ -6,7 +6,7 @@
             <div class="mb-3" v-for="category in categories" :key="category.id">
                 <label :for="`payment[${category.id}]`" class="form-label">{{ category.name }}</label>
                 <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     :id="`payment[${category.id}]`"
                     :name="`payment[${category.id}]`"
