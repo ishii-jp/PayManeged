@@ -20,9 +20,9 @@
             </div>
 
             <label for="paymentSum" class="form-label">合計</label>
+            <p>{{ paymentSum }}</p>
             <input
-                type="text"
-                readonly
+                type="hidden"
                 class="form-control-plaintext"
                 id="paymentSum"
                 name="paymentSum"

@@ -76055,14 +76055,11 @@ var render = function () {
           [_vm._v("合計")]
         ),
         _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.paymentSum))]),
+        _vm._v(" "),
         _c("input", {
           staticClass: "form-control-plaintext",
-          attrs: {
-            type: "text",
-            readonly: "",
-            id: "paymentSum",
-            name: "paymentSum",
-          },
+          attrs: { type: "hidden", id: "paymentSum", name: "paymentSum" },
           domProps: { value: _vm.paymentSum },
         }),
         _vm._v(" "),

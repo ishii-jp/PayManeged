@@ -13,9 +13,9 @@
         @foreach($categories as $category)
             <div class="mb-3">
                 <label for="payment[{{ $category->id }}]" class="form-label">{{ $category->name }}</label>
+                <p>{{ Arr::get($payment, $category->id) }}</p>
                 <input
-                    type="text"
-                    readonly
+                    type="hidden"
                     class="form-control-plaintext" id="payment[{{ $category->id }}]"
                     name="payment[{{ $category->id }}]"
                     value="{{ Arr::get($payment, $category->id) }}"
@@ -23,9 +23,9 @@
             </div>
         @endforeach
         <label for="paymentSum" class="form-label">合計</label>
+        <p>{{ $paymentSum }}</p>
         <input
-            type="text"
-            readonly
+            type="hidden"
             class="form-control-plaintext"
             id="paymentSum"
             name="paymentSum"
