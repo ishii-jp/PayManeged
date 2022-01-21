@@ -6,7 +6,9 @@ use App\Http\Requests\PaymentRequest;
 use App\Models\Category;
 use App\Services\PaymentService;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use TypeError;
@@ -65,6 +67,58 @@ class PaymentController extends Controller
     public function detail(User $user, string $year, string $month): View
     {
         return view('payments.detail')->with('users', $user->getUserWithPayments(Auth::id(), $year, $month));
+    }
+
+    /**
+     * 支払い通知画面
+     * /payment/notification
+     *
+     * @param User $user メソッドインジェクション
+     * @param string $year 通知する年
+     * @param string $month 通知する月
+     * @return View
+     */
+    public function notification(User $user, string $year, string $month): View
+    {
+        return view('payments.notification')->with([
+            'users' => $user->getUserWithPaymentsAndSum(Auth::id(), $year, $month),
+            'year' => $year,
+            'month' => $month
+        ]);
+    }
+
+    /**
+     * 支払い通知画面
+     * /payment/notification
+     *
+     * @param PaymentRequest $request
+     * @param string $year
+     * @param string $month
+     * @return RedirectResponse
+     */
+    public function notificationPost(PaymentRequest $request, string $year, string $month): RedirectResponse
+    {
+        $message = '通知を送信しました。';
+        $validated = $request->validated();
+
+        try {
+            // メール送信
+            PaymentService::sendNotification(
+                $request->user()->name,
+                config('mail.dummyAddress') ?? $request->user()->email,
+                $year,
+                $month,
+                Arr::get($validated, 'paymentSum'),
+                Arr::get($validated, 'payment'),
+                $request->input('numOfPeople')
+            );
+        } catch (Exception | TypeError $e) {
+            report($e);
+            $message = '予期せぬ不具合が発生しました。通知が送信されていない場合があります。';
+        }
+
+        return redirect(route('payment.notification', ['year' => $year, 'month' => $month]))
+            ->with('message', $message);
     }
 
     /**

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
 /**
- * エラーメッセージを検証するテストは書いていません
+ * エラーメッセージを検証するテストは本来必要ですが、ここでは書いていません。
  */
 class PaymentRequestTest extends TestCase
 {
@@ -44,6 +44,16 @@ class PaymentRequestTest extends TestCase
             'paymentSum平仮名' => [['paymentSum' => 'ああ'], false],
             'paymentカタカナ混ざり' => [['payment' => ['イイ', '50000', '0']], false],
             'paymentSumカタカナ' => [['paymentSum' => 'イイ'], false],
+            'peopleNum正常パターン2' => [['peopleNum' => '2'], true],
+            'peopleNum正常パターン3' => [['peopleNum' => '3'], true],
+            'peopleNum正常パターン4' => [['peopleNum' => '4'], true],
+            'peopleNum正常パターン5' => [['peopleNum' => '5'], true],
+            'peopleNum0のパターン' => [['peopleNum' => '0'], false],
+            'peopleNum-1のパターン' => [['peopleNum' => '-1'], false],
+            'peopleNum6のパターン' => [['peopleNum' => '6'], false],
+            'peopleひらがなのパターン' => [['peopleNum' => 'あいう'], false],
+            'peopleカタカナのパターン' => [['peopleNum' => 'アイウ'], false],
+            'people記号のパターン' => [['peopleNum' => '=="'], false],
         ];
     }
 }

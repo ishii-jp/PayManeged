@@ -26,6 +26,8 @@ Route::prefix('payment')->group(function () {
     Route::get('/history', [PaymentController::class, 'history'])->name('payment.history');
     Route::get('/history/graph', [PaymentController::class, 'graph'])->name('payment.history.graph');
     Route::get('/history/detail/{year}/{month}', [PaymentController::class, 'detail'])->name('payment.detail');
+    Route::get('/notification/{year}/{month}', [PaymentController::class, 'notification'])->name('payment.notification');
+    Route::post('/notification/{year}/{month}', [PaymentController::class, 'notificationPost'])->name('payment.notificationPost');
     Route::get('/when', [PaymentController::class, 'when'])->name('payment.when');
     Route::get('/{year}/{month}', [PaymentController::class, 'index'])->name('payment');
     Route::post('/{year}/{month}/confirm', [PaymentController::class, 'confirm'])->name('payment.confirm');

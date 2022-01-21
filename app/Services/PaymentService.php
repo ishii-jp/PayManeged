@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Mail\Payment\Notification;
+use App\Mail\Payment\NotificationOnePerson;
 use App\Models\Payment;
 use App\Models\PaymentSum;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use TypeError;
 
 class PaymentService
@@ -118,5 +121,58 @@ class PaymentService
         }
 
         return $monthlyCollect->toArray();
+    }
+
+    /**
+     * 通知を送信します。
+     *
+     * @param string $name
+     * @param string $email
+     * @param string $year
+     * @param string $month
+     * @param string $paymentSum
+     * @param array $payments
+     * @param string|null $numOfPeople
+     */
+    public static function sendNotification(
+        string  $name,
+        string  $email,
+        string  $year,
+        string  $month,
+        string  $paymentSum,
+        array   $payments,
+        ?string $numOfPeople
+    ): void {
+        // 変動費(入力値)と固定費の合計を計算
+        $totalAmount = self::calcPaySum($paymentSum, config('const.fixed_cost'));
+
+        // メール送信
+        try {
+            if (is_null($numOfPeople)) {
+                Mail::to($email)->send(new NotificationOnePerson(
+                        $name,
+                        $year,
+                        $month,
+                        $payments,
+                        $paymentSum,
+                        $totalAmount
+                    )
+                );
+            } else {
+                Mail::to($email)->send(new Notification(
+                        $name,
+                        $year,
+                        $month,
+                        $payments,
+                        $paymentSum,
+                        $totalAmount,
+                        self::calcPayPerPerson($totalAmount, $numOfPeople)
+                    )
+                );
+            }
+        } catch (Exception $e) {
+            logger("sendNotification method failed. mail to {$email}");
+            report($e);
+        }
     }
 }

@@ -8,6 +8,8 @@ class PaymentRequest extends FormRequest
 {
     private $min = 0;
     private $max = 99999999;
+    private $peopleNumMin = 2;
+    private $peopleNumMax = 5;
     private $pattern = '/^[0-9]+$/';
 
     /**
@@ -30,7 +32,8 @@ class PaymentRequest extends FormRequest
     {
         return [
             'payment.*' => "numeric|regex:{$this->pattern}|between:{$this->min}, {$this->max}",
-            'paymentSum' => "numeric|regex:{$this->pattern}|between:{$this->min}, {$this->max}"
+            'paymentSum' => "numeric|regex:{$this->pattern}|between:{$this->min}, {$this->max}",
+            'peopleNum' => "sometimes|nullable|numeric|between:{$this->peopleNumMin}, {$this->peopleNumMax}"
         ];
     }
 
@@ -44,10 +47,12 @@ class PaymentRequest extends FormRequest
         return [
             'payment.*.numeric' => '半角数字で入力して下さい。',
             'paymentSum.numeric' => '半角数字で入力して下さい。',
+            'peopleNum.numeric' => '半角数字で入力して下さい。',
             'payment.*.regex' => '使用できない文字が含まれています。',
             'paymentSum.regex' => '使用できない文字が含まれています。',
             'payment.*.between' => "入力できる金額は¥{$this->min}から¥{$this->max}までです。",
-            'paymentSum.between' => "入力できる金額は¥{$this->min}から¥{$this->max}までです。"
+            'paymentSum.between' => "入力できる金額は¥{$this->min}から¥{$this->max}までです。",
+            'peopleNum.between' => "入力できる数字は{$this->peopleNumMin}から{$this->peopleNumMax}です。",
         ];
     }
 }

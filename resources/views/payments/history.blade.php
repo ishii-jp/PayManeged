@@ -49,9 +49,12 @@
                                 >
                                     詳細
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    {{-- TODO 一旦はメールに送るようにする。のちにLineへ通知など予定 --}}
-                                    通知を送信
+                                {{-- TODO 一旦はメール通知。後にLineへ通知など予定 --}}
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ route('payment.notification', ['year' => $paymentSum->year, 'month' => $paymentSum->month]) }}"
+                                >
+                                    通知
                                 </a>
                             </div>
                         </div>

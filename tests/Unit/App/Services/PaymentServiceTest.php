@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\App\Services;
 
+use App\Mail\Payment\Notification;
+use App\Mail\Payment\NotificationOnePerson;
 use App\Models\Payment;
 use App\Models\PaymentSum;
 use App\Services\PaymentService;
@@ -9,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Mockery;
 use Tests\TestCase;
 use TypeError;
@@ -196,7 +199,7 @@ class PaymentServiceTest extends TestCase
     {
         $argObj = PaymentSum::all();
         $expected = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        
+
         self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj));
     }
 
@@ -228,6 +231,63 @@ class PaymentServiceTest extends TestCase
         $expected = [50000, 50001, 50002, 50003, 50004, 50005, 50006, 50007, 50008, 50009, 50010, 50011];
 
         self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj));
+    }
+
+    /**
+     * @test
+     * @dataProvider sendNotificationDataProvider
+     */
+    public function sendNotification_期待通りにメールを送り分けていること(
+        ?string $num,
+        string  $mailClass
+    )
+    {
+        // 実際にはメールを送らないように設定
+        Mail::fake();
+
+        $name = 'test user';
+        $email = 'test@example.co.jp';
+        $year = '2022';
+        $month = '1';
+        $payments = ['1' => '100000', '2' => '3000', '3' => '4000'];
+        $paymentSum = '107000';
+        $numOfPeople = $num;
+
+        PaymentService::sendNotification($name, $email, $year, $month, $paymentSum, $payments, $numOfPeople);
+
+        // メッセージが指定したユーザーに届いたことをアサート
+        Mail::assertSent($mailClass, function ($mail) use ($email) {
+            return $mail->hasTo($email);
+        });
+
+        // メールが1回送信されたことをアサート
+        Mail::assertSent($mailClass, 1);
+    }
+
+    public function sendNotificationDataProvider(): array
+    {
+        return [
+            'numOfPeopleがnullの場合NotificationOnePersonのメールが送信されること' => [
+                null,
+                NotificationOnePerson::class
+            ],
+            'numOfPeopleが2の場合Notificationのメールが送信されること' => [
+                '2',
+                Notification::class
+            ],
+            'numOfPeopleが3の場合Notificationのメールが送信されること' => [
+                '3',
+                Notification::class
+            ],
+            'numOfPeopleが4の場合Notificationのメールが送信されること' => [
+                '4',
+                Notification::class
+            ],
+            'numOfPeopleが5の場合Notificationのメールが送信されること' => [
+                '5',
+                Notification::class
+            ],
+        ];
     }
 
 //    /**
