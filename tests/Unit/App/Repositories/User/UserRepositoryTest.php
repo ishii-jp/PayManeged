@@ -144,4 +144,41 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue(Arr::get($retPayments, '0.category_id') <= Arr::get($retPayments, '1.category_id'));
         $this->assertTrue(Arr::get($retPayments, '1.category_id') <= Arr::get($retPayments, '2.category_id'));
     }
+
+    /**
+     * @test
+     */
+    public function getUserWithPaymentsAndSum_指定したidのusersテーブルとpaymentsとpaymentSumリレーションの値が取得できること()
+    {
+        $year = '2022';
+        $month = '1';
+        // paymentSumとpaymentsリレーションをuserテーブル作成時に一緒に作成
+        $user = User::factory()->has(PaymentSum::factory(['year' => $year, 'month' => $month]))
+            ->has(Payment::factory(['year' => $year, 'month' => $month])->count(3))
+            ->create();
+        $facPaymentSum = $user->paymentSum->toArray();
+        $facPayments = $user->payments->toArray();
+
+        $result = $this->userRepository->getUserWithPaymentsAndSum($user->id, $year, $month);
+
+        // paymentSumのテスト
+        $retPaymentSum = $result->paymentSum->toArray();
+        $this->assertSame(Arr::get($facPaymentSum, '0.user_id'), Arr::get($retPaymentSum, '0.user_id'));
+        $this->assertSame(Arr::get($facPaymentSum, '0.year'), Arr::get($retPaymentSum, '0.year'));
+        $this->assertSame(Arr::get($facPaymentSum, '0.month'), Arr::get($retPaymentSum, '0.month'));
+        $this->assertSame(Arr::get($facPaymentSum, '0.total_price'), Arr::get($retPaymentSum, '0.total_price'));
+        $this->assertSame(Arr::get($facPaymentSum, '0.created_at'), Arr::get($retPaymentSum, '0.created_at'));
+        $this->assertSame(Arr::get($facPaymentSum, '0.updated_at'), Arr::get($retPaymentSum, '0.updated_at'));
+
+        // paymentのテスト
+        $retPayments = $result->payments->toArray();
+        foreach ($retPayments as $key => $payment) {
+            $this->assertSame(Arr::get($facPayments, "{$key}.user_id"), Arr::get($payment, 'user_id'));
+            $this->assertSame(Arr::get($facPayments, "{$key}.year"), Arr::get($payment, 'year'));
+            $this->assertSame(Arr::get($facPayments, "{$key}.month"), Arr::get($payment, 'month'));
+            $this->assertSame(Arr::get($facPayments, "{$key}.total_price"), Arr::get($payment, 'total_price'));
+            $this->assertSame(Arr::get($facPayments, "{$key}.created_at"), Arr::get($payment, 'created_at'));
+            $this->assertSame(Arr::get($facPayments, "{$key}.updated_at"), Arr::get($payment, 'updated_at'));
+        }
+    }
 }
