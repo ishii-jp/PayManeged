@@ -196,7 +196,8 @@ class PaymentController extends Controller
                 $request->input('payment'),
                 $request->input('paymentSum')
             );
-        } catch (Exception | TypeError) {
+        } catch (Exception | TypeError $e) {
+            report($e);
             return view('payments.complete')->with('errorMessage', config('message.compError'));
         }
 
