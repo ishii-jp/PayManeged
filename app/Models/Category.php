@@ -31,7 +31,8 @@ class Category extends Model
      * 任意のカテゴリー名を返します
      *
      * @param string 取得したいカテゴリー名のid
-     * @return stirng|null string:カテゴリー名 null:カテゴリー名が存在しない場合。
+     * @return string|null string:カテゴリー名 null:カテゴリー名が存在しない場合。
+     * @todo カテゴリーを取得したらキャッシュするようにして何度メソッド呼び出してもクエリー1回で済むようにしたい。
      */
     public static function getCategoryName(string $id): ?string
     {

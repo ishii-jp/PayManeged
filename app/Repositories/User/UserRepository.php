@@ -4,6 +4,9 @@ namespace App\Repositories\User;
 
 use App\Models\User;
 
+/**
+ * @todo このクラスのメソッドの処理をモデルに移して呼び出すように修正したい。
+ */
 class UserRepository implements UserRepositoryInterface
 {
     /**
