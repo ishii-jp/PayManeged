@@ -29,6 +29,16 @@ trait CommonScope
         $query->orderBy('month', 'DESC');
     }
 
+    /**
+     * カテゴリーIDで昇順ソートするようにクエリのスコープを設定
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return void
+     */
+    public function scopeCategoryIdAsc($query)
+    {
+        $query->orderBy('category_id', 'ASC');
+    }
 
     /**
      * 特定のidのみを含むようにクエリのスコープを設定
@@ -41,7 +51,7 @@ trait CommonScope
     {
         return $query->where('id', $id);
     }
-    
+
     /**
      * 特定のyearのみを含むようにクエリのスコープを設定
      *

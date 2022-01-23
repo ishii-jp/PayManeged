@@ -94,7 +94,7 @@ class User extends Authenticatable
         return self::with(['payments' => function ($query) use ($year, $month) {
             $query->ofYear($year)
                 ->ofMonth($month)
-                ->orderBy('category_id', 'ASC');
+                ->categoryIdAsc();
         }])
             ->ofId($userId)
             ->first();
@@ -114,7 +114,7 @@ class User extends Authenticatable
             'payments' => function ($query) use ($year, $month) {
                 $query->ofYear($year)
                     ->ofMonth($month)
-                    ->orderBy('category_id', 'ASC');
+                    ->categoryIdAsc();
             },
             'paymentSum' => function ($query) use ($year, $month) {
                 $query->ofYear($year)
