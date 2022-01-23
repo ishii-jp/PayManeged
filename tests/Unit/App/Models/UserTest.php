@@ -1,46 +1,29 @@
 <?php
 
-namespace Tests\Unit\App\Repositories\User;
+namespace Tests\Unit\App\Models;
 
 use Illuminate\Support\Arr;
 use App\Models\Payment;
 use App\Models\PaymentSum;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Repositories\User\UserRepository;
 use App\Models\User;
 
-/**
- * 2022/01/23
- * app/Models/User.phpへロジックを移したので今後はtests/Unit/App/Models/UserTest.phpへテストを追加していきます。
- * 今後本テストクラスではメソッドの呼び出しのみテストする様にします。
- */
-class UserRepositoryTest extends TestCase
+class UserTest extends TestCase
 {
     use RefreshDatabase;
-
-    private UserRepository $userRepository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->userRepository = app(UserRepository::class);
-
-        // DB接続先がテスト用に切り替わっているか確認
-        // dd(env('APP_ENV'), env('DB_DATABASE'), env('DB_CONNECTION'));
-    }
 
     /**
      * @test
      */
-    public function getUserWithPaymentSum_指定したidのusersテーブルとpaymentSumリレーションの値が取得できること()
+    public function getWithPaymentSum_指定したidのusersテーブルとpaymentSumリレーションの値が取得できること()
     {
         // 検証用usersテーブルとリレーションのレコードを作成し値を変数へ
         $user = User::factory()->has(PaymentSum::factory())->create();
         $facPaymentSum = $user->paymentSum->toArray();
 
         // メソッドの返り値を変数へ
-        $result = $this->userRepository->getUserWithPaymentSum($user->id);
+        $result = User::getWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
 
         // 値が等しいことのテスト
@@ -55,11 +38,11 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function getUserWithPaymentSum_paymentSumリレーションがyear降順ソートされていること()
+    public function getWithPaymentSum_paymentSumリレーションがyear降順ソートされていること()
     {
         $user = User::factory()->has(PaymentSum::factory()->count(3))->create();
 
-        $result = $this->userRepository->getUserWithPaymentSum($user->id);
+        $result = User::getWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
 
         $this->assertTrue(Arr::get($retPaymentSum, '0.year') >= Arr::get($retPaymentSum, '1.year'));
@@ -69,12 +52,12 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function getUserWithPaymentSum_paymentSumリレーションがmonth降順ソートされていること()
+    public function getWithPaymentSum_paymentSumリレーションがmonth降順ソートされていること()
     {
         // monthの検証のためyearを指定してfactory作成
         $user = User::factory()->has(PaymentSum::factory(['year' => '2022'])->count(3))->create();
 
-        $result = $this->userRepository->getUserWithPaymentSum($user->id);
+        $result = User::getWithPaymentSum($user->id);
         $retPaymentSum = $result->paymentSum->toArray();
 
         $this->assertTrue(Arr::get($retPaymentSum, '0.month') >= Arr::get($retPaymentSum, '1.month'));
@@ -84,36 +67,36 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function getUserWithPaymentSum_第2引数が指定されている場合指定された年のpaymentSumが取得できていること()
+    public function getWithPaymentSum_第2引数が指定されている場合指定された年のpaymentSumが取得できていること()
     {
         $year = '2022';
         $num = 2;
         $user = User::factory()->has(PaymentSum::factory(['year' => $year])->count($num))->create();
 
-        $result = $this->userRepository->getUserWithPaymentSum($user->id, $year);
+        $result = User::getWithPaymentSum($user->id, $year);
         $this->assertSame($num, $result->paymentSum->count());
     }
 
     /**
      * @test
      */
-    public function getUserWithPaymentSum_第2引数が指定されるかつ指定された年がDBに存在しない場合空のコレクションが返ってくること()
+    public function getWithPaymentSum_第2引数が指定されるかつ指定された年がDBに存在しない場合空のコレクションが返ってくること()
     {
         $user = User::factory()->has(PaymentSum::factory()->count(10))->create();
 
-        $result = $this->userRepository->getUserWithPaymentSum($user->id, '100');
+        $result = User::getWithPaymentSum($user->id, '100');
         $this->assertSame(0, $result->paymentSum->count());
     }
 
     /**
      * @test
      */
-    public function getUserWithPayments_指定したid_year_monthのusersテーブルとpaymentsリレーションの値が取得できること()
+    public function getWithPayments_指定したid_year_monthのusersテーブルとpaymentsリレーションの値が取得できること()
     {
         $user = User::factory()->has(Payment::factory()->count(3))->create();
         $facPayments = $user->payments->toArray();
 
-        $result = $this->userRepository->getUserWithPayments(
+        $result = User::getWithPayments(
             $user->id,
             Arr::get($facPayments, '0.year'),
             Arr::get($facPayments, '0.month')
@@ -133,13 +116,13 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function getUserWithPayments_昇順ソートされていること()
+    public function getWithPayments_昇順ソートされていること()
     {
         // 検証用usersテーブルとリレーションのレコードを作成し値を変数へ
         $user = User::factory()->has(Payment::factory(['user_id' => '1', 'year' => '2020', 'month' => '1'])->count(3))->create();
         $facPayments = $user->payments->toArray();
 
-        $result = $this->userRepository->getUserWithPayments(
+        $result = User::getWithPayments(
             $user->id,
             Arr::get($facPayments, '0.year'),
             Arr::get($facPayments, '0.month')
@@ -153,7 +136,7 @@ class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function getUserWithPaymentsAndSum_指定したidのusersテーブルとpaymentsとpaymentSumリレーションの値が取得できること()
+    public function getWithPaymentsAndSum_指定したidのusersテーブルとpaymentsとpaymentSumリレーションの値が取得できること()
     {
         $year = '2022';
         $month = '1';
@@ -164,7 +147,7 @@ class UserRepositoryTest extends TestCase
         $facPaymentSum = $user->paymentSum->toArray();
         $facPayments = $user->payments->toArray();
 
-        $result = $this->userRepository->getUserWithPaymentsAndSum($user->id, $year, $month);
+        $result = User::getWithPaymentsAndSum($user->id, $year, $month);
 
         // paymentSumのテスト
         $retPaymentSum = $result->paymentSum->toArray();

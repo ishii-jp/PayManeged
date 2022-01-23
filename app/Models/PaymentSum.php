@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PaymentSum extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonScope;
 
     /**
      * 複数代入可能な属性

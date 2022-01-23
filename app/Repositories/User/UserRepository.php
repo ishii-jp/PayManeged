@@ -4,9 +4,6 @@ namespace App\Repositories\User;
 
 use App\Models\User;
 
-/**
- * @todo このクラスのメソッドの処理をモデルに移して呼び出すように修正したい。
- */
 class UserRepository implements UserRepositoryInterface
 {
     /**
@@ -19,18 +16,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUserWithPaymentSum(string $userId, string $year = ''): ?object
     {
-        return User::with(['paymentSum' => function ($query) use ($year) {
-            if ($year === '') {
-                $query->orderBy('year', 'DESC')
-                    ->orderBy('month', 'DESC');
-            } else {
-                $query->where('year', $year)
-                    ->orderBy('year', 'DESC')
-                    ->orderBy('month', 'DESC');
-            }
-        }])
-            ->where('id', $userId)
-            ->first();
+        return User::getWithPaymentSum($userId, $year);
     }
 
     /**
@@ -43,13 +29,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUserWithPayments(string $userId, string $year, string $month): ?object
     {
-        return User::with(['payments' => function ($query) use ($year, $month) {
-            $query->where('year', $year)
-                ->where('month', $month)
-                ->orderBy('category_id', 'ASC');
-        }])
-            ->where('id', $userId)
-            ->first();
+        return User::getWithPayments($userId, $year, $month);
     }
 
     /**
@@ -62,20 +42,6 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUserWithPaymentsAndSum(string $userId, string $year, string $month): ?object
     {
-        return User::with([
-            'payments' => function ($query) use ($year, $month) {
-                $query->where('year', $year)
-                    ->where('month', $month)
-                    ->orderBy('category_id', 'ASC');
-            },
-            'paymentSum' => function ($query) use ($year, $month) {
-                $query->where('year', $year)
-                    ->where('month', $month)
-                    ->orderBy('year', 'DESC')
-                    ->orderBy('month', 'DESC');
-            }
-        ])
-            ->where('id', $userId)
-            ->first();
+        return User::getWithPaymentsAndSum($userId, $year, $month);
     }
 }
