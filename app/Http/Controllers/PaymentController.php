@@ -163,6 +163,7 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
+     * @todo フォーム入力値をvalidated()から取得するように修正する。
      */
     public function confirm(PaymentRequest $request, string $year, string $month): View
     {
@@ -185,6 +186,7 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
+     * @todo フォーム入力値をvalidated()から取得するように修正する。
      */
     public function complete(PaymentRequest $request, string $year, string $month): View
     {
