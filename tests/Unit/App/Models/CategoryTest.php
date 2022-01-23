@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -22,7 +23,7 @@ class CategoryTest extends TestCase
      */
     public function getCategoryAll_テーブルにレコードが1件も存在しない場合空のコレクションが返ってくること(): void
     {
-        $category = Category::all();
+        $category = Category::getCategoryAll();
         $this->assertTrue($category->isEmpty());
     }
 
@@ -31,7 +32,7 @@ class CategoryTest extends TestCase
      */
     public function getCategoryAll_テーブルにレコードが1件も存在しない場合countすると0になること(): void
     {
-        self::assertSame(0, count(Category::all()));
+        self::assertSame(0, count(Category::getCategoryAll()));
     }
 
     /**
@@ -39,15 +40,30 @@ class CategoryTest extends TestCase
      */
     public function getCategoryAll_テーブルにレコードがある場合全てのレコードが返ってくること(): void
     {
-        $num = 4;
+        $num = 3;
         Category::factory($num)->create();
-        self::assertSame($num, count(Category::all()));
+        self::assertSame($num, count(Category::getCategoryAll()));
     }
 
     /**
      * @test
      */
-    public function getCategoryName_categoriesテーブに存在しないidを指定された場合nullを返すこと()
+    public function getCategoryAll_メソッド実行後にキャッシュが生成されていること(): void
+    {
+        self::assertNull(Cache::get(Category::CATEGORY_CACHE_KEY)); // メソッド実行前はキャッシュが存在しないこと
+
+        $num = 3;
+        Category::factory($num)->create();
+
+        Category::getCategoryAll();
+
+        self::assertNotNull(Cache::get(Category::CATEGORY_CACHE_KEY)); // メソッド実行後はキャッシュが生成されていること
+    }
+
+    /**
+     * @test
+     */
+    public function getCategoryName_categoriesテーブに存在しないidを指定された場合nullを返すこと(): void
     {
         $id = '90000'; // 存在しないid
         self::assertNull(Category::getCategoryName($id));
@@ -56,7 +72,7 @@ class CategoryTest extends TestCase
     /**
      * @test
      */
-    public function getCategoryName_categoriesテーブに存在するidを指定された場合該当するカテゴリー名を返すこと()
+    public function getCategoryName_categoriesテーブに存在するidを指定された場合該当するカテゴリー名を返すこと(): void
     {
         $id = '1';
         $categoryName = 'test category 1';
