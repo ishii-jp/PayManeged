@@ -110,7 +110,7 @@ class PaymentController extends Controller
                 $month,
                 Arr::get($validated, 'paymentSum'),
                 Arr::get($validated, 'payment'),
-                $request->input('numOfPeople')
+                Arr::get($validated, 'numOfPeople')
             );
         } catch (Exception | TypeError $e) {
             report($e);
@@ -163,15 +163,16 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
-     * @todo フォーム入力値をvalidated()から取得するように修正する。
      */
     public function confirm(PaymentRequest $request, string $year, string $month): View
     {
+        $validated = $request->validated();
+
         return view('payments.confirm')->with(
             [
                 'categories' => Category::getCategoryAll(),
-                'payment' => $request->input('payment'),
-                'paymentSum' => $request->input('paymentSum'),
+                'payment' => Arr::get($validated, 'payment'),
+                'paymentSum' => Arr::get($validated, 'paymentSum'),
                 'year' => $year,
                 'month' => $month
             ]
@@ -186,17 +187,20 @@ class PaymentController extends Controller
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
      * @return View
-     * @todo フォーム入力値をvalidated()から取得するように修正する。
      */
     public function complete(PaymentRequest $request, string $year, string $month): View
     {
+        $validated = $request->validated();
+        $payments = Arr::get($validated, 'payment');
+        $paymentSum = Arr::get($validated, 'paymentSum');
+
         try {
             PaymentService::allRegister(
                 $year,
                 $month,
                 Auth::id(),
-                $request->input('payment'),
-                $request->input('paymentSum')
+                $payments,
+                $paymentSum
             );
         } catch (Exception | TypeError $e) {
             report($e);
@@ -204,7 +208,7 @@ class PaymentController extends Controller
         }
 
         // 変動費(入力値)と固定費の合計を計算
-        $totalAmount = PaymentService::calcPaySum($request->input('paymentSum'), config('const.fixed_cost'));
+        $totalAmount = PaymentService::calcPaySum($paymentSum, config('const.fixed_cost'));
 
         /**
          * メール送信
@@ -215,8 +219,8 @@ class PaymentController extends Controller
             $request->user()->name,
             $year,
             $month,
-            $request->input('payment'),
-            $request->input('paymentSum'),
+            $payments,
+            $paymentSum,
             $totalAmount,
             PaymentService::calcPayPerPerson($totalAmount) // 1人あたりの支払い金額を計算
         );
