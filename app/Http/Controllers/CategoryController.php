@@ -26,7 +26,7 @@ class CategoryController extends Controller
     /**
      * カテゴリー作成画面
      * [GET] /category/create
-     *
+     * @return View
      */
     public function create(): view
     {
@@ -36,9 +36,11 @@ class CategoryController extends Controller
     /**
      * カテゴリー作成画面
      * [POST] /category/create
+     * @param CategoryRequest $request
+     * @return View
      * @todo バリデーションを実装する
      */
-    public function createPost(CategoryRequest $request): view
+    public function createPost(CategoryRequest $request): View
     {
         $validated = $request->validated();
         $userId = Auth::id();
@@ -61,10 +63,10 @@ class CategoryController extends Controller
     /**
      * カテゴリー一覧画面
      * [GET]/category/show
-     *
+     * @return View
      */
-    public function show()
+    public function show(): View
     {
-        //
+        return view('categories.show');
     }
 }
