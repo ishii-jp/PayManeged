@@ -148,7 +148,7 @@ class PaymentController extends Controller
     {
         return view('payments.index')->with(
             [
-                'categories' => Category::getCategoryAll(),
+                'categories' => Category::getCategoryAll(Auth::id()),
                 'year' => $year,
                 'month' => $month
             ]
@@ -170,7 +170,7 @@ class PaymentController extends Controller
 
         return view('payments.confirm')->with(
             [
-                'categories' => Category::getCategoryAll(),
+                'categories' => Category::getCategoryAll(Auth::id()),
                 'payment' => Arr::get($validated, 'payment'),
                 'paymentSum' => Arr::get($validated, 'paymentSum'),
                 'year' => $year,

@@ -14,6 +14,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => $this->faker->numberBetween($min = 1, $max = 100),
             'name' => $this->faker->word(),
         ];
     }

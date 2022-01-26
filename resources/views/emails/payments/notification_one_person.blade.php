@@ -7,7 +7,7 @@
 
 {{ $year }}年{{ $month }}月分変動費<br>
 @foreach($payments as $category_id => $payment)
-    {{ Category::getCategoryName($category_id) }} ： ¥{{ FormatUtil::numberFormat($payment) }}<br>
+    {{ Category::getCategoryName($category_id, Auth::id()) }} ： ¥{{ FormatUtil::numberFormat($payment) }}<br>
 @endforeach
 
 変動費の合計金額 ： ¥{{ FormatUtil::numberFormat($paymentSum) }}<br>

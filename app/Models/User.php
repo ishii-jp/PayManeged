@@ -58,6 +58,14 @@ class User extends Authenticatable
     }
 
     /**
+     * リレーション users_categories hasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    /**
      * 指定したユーザー情報をpaymentSumリレーションを一緒に取得します
      * なお、第二引数に年を指定した場合は指定した年のpaymentSumを一緒に取得します
      *

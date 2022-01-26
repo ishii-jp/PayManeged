@@ -9,13 +9,18 @@
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">支払い入力画面</div>
     {{-- TODO 初期値はDBから、バリデートエラーの場合は入力値を保持するようにする。 --}}
-    <payment-form-component
-        route="{{ route('payment.confirm', ['year' => $year, 'month' => $month]) }}"
-        :categories="{{ $categories }}"
-        :old="{{ json_encode(Session::getOldInput()) }}"
-        :errors="{{ $errors }}"
-    ></payment-form-component>
-    <button type="button" class="btn btn-primary" onclick="locationHref('{{ route('payment.when') }}');">
-        年月選択へ戻る
-    </button>
+    @if($categories->isNotEmpty())
+        <payment-form-component
+            route="{{ route('payment.confirm', ['year' => $year, 'month' => $month]) }}"
+            :categories="{{ $categories }}"
+            :old="{{ json_encode(Session::getOldInput()) }}"
+            :errors="{{ $errors }}"
+        ></payment-form-component>
+        <button type="button" class="btn btn-primary" onclick="locationHref('{{ route('payment.when') }}');">
+            年月選択へ戻る
+        </button>
+    @else
+        @include('elements.alert', ['errorMessage' => 'カテゴリの登録がされていません。カテゴリーの作成をお願いします。'])
+        <p>カテゴリー作成は<a href="{{ route('category.create') }}">こちら</a></p>
+    @endif
 @endsection

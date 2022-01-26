@@ -44,20 +44,53 @@ class CategoryTest extends TestCase
         Category::factory($num)->create();
         self::assertSame($num, count(Category::getCategoryAll()));
     }
+    
+    /**
+     * @test
+     */
+    public function getCategoryAll_userId指定時テーブルにレコードが1件も存在しない場合空のコレクションが返ってくること(): void
+    {
+        $userId = '10';
+        $category = Category::getCategoryAll($userId);
+        $this->assertTrue($category->isEmpty());
+    }
 
     /**
      * @test
      */
-    public function getCategoryAll_メソッド実行後にキャッシュが生成されていること(): void
+    public function getCategoryAll_userId指定時テーブルにレコードが1件も存在しない場合countすると0になること(): void
     {
-        self::assertNull(Cache::get(Category::CATEGORY_CACHE_KEY)); // メソッド実行前はキャッシュが存在しないこと
+        $userId = '10';
+        self::assertSame(0, count(Category::getCategoryAll($userId)));
+    }
+
+    /**
+     * @test
+     */
+    public function getCategoryAll_userId指定時テーブルにレコードがある場合全てのレコードが返ってくること(): void
+    {
+        $userId = '10';
+        $num = 3;
+        Category::factory($num)->create(['user_id' => $userId]);
+        self::assertSame($num, count(Category::getCategoryAll($userId)));
+    }
+
+    /**
+     * @test
+     */
+    public function getCategoryAll_userId指定してメソッド実行後にキャッシュが生成されていること(): void
+    {
+        $userId = '10';
+        $cacheKey = Category::CATEGORY_CACHE_KEY . '_user_id_' . $userId;
+
+        self::assertNull(Cache::get($cacheKey)); // メソッド実行前はキャッシュが存在しないこと
 
         $num = 3;
-        Category::factory($num)->create();
+        Category::factory($num)->create(['user_id' => $userId]);
 
-        Category::getCategoryAll();
+        Category::getCategoryAll($userId);
 
-        self::assertNotNull(Cache::get(Category::CATEGORY_CACHE_KEY)); // メソッド実行後はキャッシュが生成されていること
+        self::assertNotNull(Cache::get($cacheKey)); // メソッド実行後はキャッシュが生成されていること
     }
 
     /**

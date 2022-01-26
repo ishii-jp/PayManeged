@@ -34,7 +34,7 @@
                     </tr>
                     @foreach($users->payments as $payment)
                         <tr>
-                            <th>{{ Category::getCategoryName($payment->category_id) }}</th>
+                            <th>{{ Category::getCategoryName($payment->category_id, Auth::id()) }}</th>
                             <td>¥{{ FormatUtil::numberFormat($payment->price) }}</td>
                         </tr>
                         <input type="hidden" name="payment[{{ $payment->category_id }}]" value="{{ $payment->price }}">

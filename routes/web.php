@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 
 /*
@@ -21,6 +22,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('category')->group(function () {
+    Route::get('create', [CategoryController::class, 'create'])->name('category.create');
+    Route::POST('create', [CategoryController::class, 'createPost'])->name('category.createPost');
+    Route::get('show', [CategoryController::class, 'show'])->name('category.show');
+});
 
 Route::prefix('payment')->group(function () {
     Route::get('/history', [PaymentController::class, 'history'])->name('payment.history');

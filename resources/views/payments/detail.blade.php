@@ -26,7 +26,7 @@
                 @foreach($users->payments as $payment)
                     <tbody>
                     <tr>
-                        <td>{{ \App\Models\Category::getCategoryName($payment->category_id) }}</td>
+                        <td>{{ \App\Models\Category::getCategoryName($payment->category_id, Auth::id()) }}</td>
                         <td>¥{{ \App\Utils\FormatUtil::numberFormat($payment->price) }}</td>
                         <td>{{ $payment->updated_at }}</td>
                     </tr>
