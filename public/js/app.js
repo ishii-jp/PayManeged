@@ -2216,9 +2216,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   props: ["route", "categories", "old", "errors"],
-  mounted: function mounted() {
-    console.log("PaymentFormComponent mounted.");
-  },
   methods: {
     /**
      * paymentが存在する場合はidのキーの値を返します。
@@ -2272,6 +2269,16 @@ __webpack_require__.r(__webpack_exports__);
      */
     paymentSum: function paymentSum() {
       var _this2 = this;
+
+      // カテゴリーが一つしかない場合は配列にせずそのままpaymentの最初の要素を返します
+      var paymentObServer = this.payment;
+      var payment = Object.keys(paymentObServer).map(function (key) {
+        return paymentObServer[key];
+      });
+
+      if (payment.length === 1) {
+        return payment.shift();
+      }
 
       var paymentArr = this.categories.map(function (value) {
         var retArr = [];

@@ -45,9 +45,6 @@ export default {
         };
     },
     props: ["route", "categories", "old", "errors"],
-    mounted() {
-        console.log("PaymentFormComponent mounted.");
-    },
     methods: {
         /**
          * paymentが存在する場合はidのキーの値を返します。
@@ -96,6 +93,16 @@ export default {
          * カテゴリーIDごとの金額の配列を作成し、配列の要素が数字か判定後Number型にキャストして合計金額を計算します。
          */
         paymentSum: function () {
+            // カテゴリーが一つしかない場合は配列にせずそのままpaymentの最初の要素を返します
+            let paymentObServer = this.payment;
+            let payment = Object.keys(paymentObServer).map(function (key) {
+                return paymentObServer[key]
+            });
+
+            if (payment.length === 1) {
+                return payment.shift();
+            }
+
             let paymentArr = this.categories.map((value) => {
                 let retArr = [];
                 retArr.push(this.payment[value.id]);
