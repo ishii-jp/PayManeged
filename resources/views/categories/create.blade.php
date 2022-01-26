@@ -9,6 +9,8 @@
 @section('content')
     <div class="shadow-lg p-3 mb-5 bg-white rounded">{{ $title }}</div>
 
+    <a href="{{ route('category.show') }}">一覧へ戻る</a>
+
     @include('elements.info')
 
     <form method="POST" action="{{ route('category.createPost') }}">

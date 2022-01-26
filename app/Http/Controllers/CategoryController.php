@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryPutRequest;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Utils\CacheUtil;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -26,6 +27,7 @@ class CategoryController extends Controller
     /**
      * カテゴリー作成画面
      * [GET] /category/create
+     *
      * @return View
      */
     public function create(): View
@@ -34,11 +36,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * カテゴリー作成画面
+     * カテゴリー作成
      * [POST] /category/create
+     *
      * @param CategoryRequest $request
      * @return View
-     * @todo バリデーションを実装する
      */
     public function createPost(CategoryRequest $request): View
     {
@@ -61,12 +63,40 @@ class CategoryController extends Controller
     }
 
     /**
+     * カテゴリー更新
+     * [PUT] /category/update
+     *
+     * @param CategoryPutRequest $request
+     * @return RedirectResponse
+     */
+    public function update(CategoryPutRequest $request): RedirectResponse
+    {
+        $userId = Auth::id();
+        $validated = $request->validated();
+        $message = 'カテゴリーを更新しました。';
+
+        try {
+            // カテゴリー名を更新
+            Category::updateCategories($userId, Arr::get($validated, 'categoryName'));
+
+            // キャッシュを削除
+            CacheUtil::categoryCacheDelete($userId);
+        } catch (Exception $e) {
+            report($e);
+            $message = 'カテゴリーの更新に失敗しました。';
+        }
+
+        return redirect(route('category.show'))->with('message', $message);
+    }
+
+    /**
      * カテゴリー一覧画面
-     * [GET]/category/show
+     * [GET] /category/show
+     *
      * @return View
      */
     public function show(): View
     {
-        return view('categories.show');
+        return view('categories.show')->with('categories', Category::getCategoryAll(Auth::id()));
     }
 }

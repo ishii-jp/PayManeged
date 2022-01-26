@@ -71,6 +71,14 @@
                                         支払い履歴グラフ
                                     </a>
 
+                                    <a class="dropdown-item" href="{{ route('category.show') }}">
+                                        カテゴリー一覧
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('category.create') }}">
+                                        カテゴリー作成
+                                    </a>
+
                                     <a
                                         class="dropdown-item"
                                         href="{{ route('logout') }}"

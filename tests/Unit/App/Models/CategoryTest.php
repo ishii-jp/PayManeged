@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -44,7 +45,7 @@ class CategoryTest extends TestCase
         Category::factory($num)->create();
         self::assertSame($num, count(Category::getCategoryAll()));
     }
-    
+
     /**
      * @test
      */
@@ -112,5 +113,59 @@ class CategoryTest extends TestCase
         Category::factory()->create(['id' => $id, 'name' => $categoryName]);
 
         self::assertSame($categoryName, Category::getCategoryName($id));
+    }
+
+    /**
+     * @test
+     */
+    public function updateCategories_正常にアップデートできること()
+    {
+        $id = '1';
+        $userId = '1';
+        Category::factory()->create(['id' => $id, 'user_id' => $userId]);
+        $categoryNames = [$id => 'category test 1'];
+
+        Category::updateCategories($userId, $categoryNames);
+        $categories = Category::where('user_id', $userId)->get();
+
+        foreach ($categories as $category) {
+            $this->assertSame($categoryNames[$id], $category->name);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function updateCategories_存在しないidが配列のキーでメソッドに渡ると例外がスローされること()
+    {
+        $id = '1';
+        $userId = '1';
+        $noId = '99';
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Category not found $id is ' . $noId);
+
+        Category::factory()->create(['id' => $id, 'user_id' => $userId]);
+        $categoryNames = [$noId => 'category test 1']; // 存在しないidをキーに設定
+
+        Category::updateCategories($userId, $categoryNames);
+    }
+
+    /**
+     * @test
+     */
+    public function updateCategories_DBから取得したuser_idとログインユーザーIDが異なる場合例外がスローされること()
+    {
+        $id = '1';
+        $userId = '8';
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Illegal request unmatch user_id id is ' . $id . 'user_id is ' . $userId);
+
+        Category::factory()->create(['id' => $id, 'user_id' => '1']);
+        $categoryNames = [$id => 'category test 1']; // 存在しないidをキーに設定
+
+        // ユーザーID8のユーザーがユーザーID1のレコードを更新しようとした場合を想定
+        Category::updateCategories($userId, $categoryNames);
     }
 }

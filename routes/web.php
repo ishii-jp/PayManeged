@@ -26,6 +26,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('category')->group(function () {
     Route::get('create', [CategoryController::class, 'create'])->name('category.create');
     Route::post('create', [CategoryController::class, 'createPost'])->name('category.createPost');
+    Route::put('update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('show', [CategoryController::class, 'show'])->name('category.show');
 });
 

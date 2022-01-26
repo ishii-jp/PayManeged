@@ -5,7 +5,6 @@ namespace Tests\Unit\App\Http\Requests;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
-use Validator;
 
 class CategoryRequestTest extends TestCase
 {

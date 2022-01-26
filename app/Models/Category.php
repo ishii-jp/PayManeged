@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
@@ -81,5 +83,32 @@ class Category extends Model
             ['user_id' => $userId, 'name' => $categoryName],
             ['name' => $categoryName]
         );
+    }
+
+    /**
+     * 複数のカテゴリーを更新します。
+     *
+     * @param string $userId
+     * @param array $categoryNames
+     * @throws Exception カテゴリーモデルが見つからなかった場合と、取得したカテゴリーのuser_idとログインidが異なる場合にスローされます。
+     */
+    public static function updateCategories(string $userId, array $categoryNames): void
+    {
+        foreach ($categoryNames as $id => $categoryName) {
+            try {
+                $category = self::findOrFail($id);
+            } catch (ModelNotFoundException $e) {
+                report($e);
+                throw new Exception('Category not found $id is ' . $id);
+            }
+
+            throw_if(
+                $category->user_id != $userId,
+                new Exception('Illegal request unmatch user_id id is ' . $id . 'user_id is ' . $userId)
+            );
+
+            $category->name = $categoryName;
+            $category->save();
+        }
     }
 }

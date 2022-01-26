@@ -20,7 +20,6 @@
             年月選択へ戻る
         </button>
     @else
-        @include('elements.alert', ['errorMessage' => 'カテゴリの登録がされていません。カテゴリーの作成をお願いします。'])
-        <p>カテゴリー作成は<a href="{{ route('category.create') }}">こちら</a></p>
+        @include('elements.category_empty')
     @endif
 @endsection
