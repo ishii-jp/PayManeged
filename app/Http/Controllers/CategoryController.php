@@ -28,7 +28,7 @@ class CategoryController extends Controller
      * [GET] /category/create
      * @return View
      */
-    public function create(): view
+    public function create(): View
     {
         return view('categories.create');
     }
