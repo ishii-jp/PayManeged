@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
-    use HasFactory, CommonScope;
+    use HasFactory;
 
     const CATEGORY_CACHE_KEY = 'payment_categories';
 
