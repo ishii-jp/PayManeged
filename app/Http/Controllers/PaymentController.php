@@ -31,7 +31,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い履歴画面
-     * /payment/history
+     * [GET] /payment/history
      *
      * @param User $user メソッドインジェクション
      * @return View
@@ -43,7 +43,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い履歴グラフ画面
-     * /payment/history/graph
+     * [GET] /payment/history/graph
      *
      * @param Request $request
      * @param User $user
@@ -57,7 +57,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い履歴詳細画面
-     * /payment/history/detail
+     * [GET] /payment/history/detail
      *
      * @param User $user メソッドインジェクション
      * @param string $year 支払い入力する年
@@ -71,7 +71,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い通知画面
-     * /payment/notification
+     * [GET] /payment/notification
      *
      * @param User $user メソッドインジェクション
      * @param string $year 通知する年
@@ -89,7 +89,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い通知画面
-     * /payment/notification
+     * [POST] /payment/notification
      *
      * @param PaymentRequest $request
      * @param string $year
@@ -123,7 +123,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い日時選択画面
-     * /payment/when
+     * [GET] /payment/when
      *
      * @return View
      */
@@ -138,7 +138,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い入力画面
-     * /payment
+     * [GET] /payment
      *
      * @param string $year 支払い入力する年
      * @param string $month 支払い入力する月
@@ -157,7 +157,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い入力確認画面
-     * /payment/confirm
+     * [POST] /payment/confirm
      *
      * @param PaymentRequest $request
      * @param string $year 支払い入力する年
@@ -181,7 +181,7 @@ class PaymentController extends Controller
 
     /**
      * 支払い入力完了画面
-     * /payment/complete
+     * [POST] /payment/complete
      *
      * @param PaymentRequest $request
      * @param string $year 支払い入力する年
