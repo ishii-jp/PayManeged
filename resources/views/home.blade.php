@@ -14,8 +14,8 @@
                             </div>
                         @endif
 
-                        {{ __('You are logged in!') }}
-                            
+                        <p>{{ __('You are logged in!') }}</p>
+
                         <h4>Site menu</h4>
                         <ul class="list-group">
                             <li class="list-group-item"><a href="{{ route('category.create') }}">カテゴリー作成</a></li>
