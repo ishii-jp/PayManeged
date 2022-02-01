@@ -7,7 +7,7 @@
 @section('title', $title)
 
 @section('content')
-    <div class="shadow-lg p-3 mb-5 bg-white rounded">{{ $title }}</div>
+    @include('elements.title')
 
     @includeUnless(is_null(session('message')), 'elements.info', ['message' => session('message')])
 
