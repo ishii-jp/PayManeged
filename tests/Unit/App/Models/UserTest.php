@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\App\Models;
 
+use App\Models\Category;
 use Illuminate\Support\Arr;
 use App\Models\Payment;
 use App\Models\PaymentSum;
@@ -86,6 +87,25 @@ class UserTest extends TestCase
 
         $result = User::getWithPaymentSum($user->id, '100');
         $this->assertSame(0, $result->paymentSum->count());
+    }
+
+    /**
+     * @test
+     */
+    public function getWithPaymentSum_getCategoryにtrueをセットした時カテゴリーリレーションがid昇順で取得できること()
+    {
+        $user = User::factory()->has(PaymentSum::factory())->has(Category::factory()->count(2))->create();
+
+        $result = User::getWithPaymentSum($user->id, '', true);
+
+        array_reduce(
+            $result->categories->toArray(),
+            function ($carry, $item) {
+                // idが昇順ソートされていることをテスト
+                self::assertTrue($carry < $item);
+            },
+            0
+        );
     }
 
     /**

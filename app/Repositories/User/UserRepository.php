@@ -12,11 +12,12 @@ class UserRepository implements UserRepositoryInterface
      *
      * @param string $userId 取得したいユーザーID
      * @param string $year 取得したい年
+     * @param bool $getCategory カテゴリー取得するか否かのスイッチ用
      * @return object|null
      */
-    public function getUserWithPaymentSum(string $userId, string $year = ''): ?object
+    public function getUserWithPaymentSum(string $userId, string $year = '', bool $getCategory = false): ?object
     {
-        return User::getWithPaymentSum($userId, $year);
+        return User::getWithPaymentSum($userId, $year, $getCategory);
     }
 
     /**

@@ -41,6 +41,17 @@ trait CommonScope
     }
 
     /**
+     * IDで昇順ソートするようにクエリのスコープを設定
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return void
+     */
+    public function scopeIdAsc($query)
+    {
+        $query->orderBy('id', 'ASC');
+    }
+
+    /**
      * 特定のidのみを含むようにクエリのスコープを設定
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

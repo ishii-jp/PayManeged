@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -71,22 +72,31 @@ class User extends Authenticatable
      *
      * @param string $userId 取得したいユーザーID
      * @param string $year 取得したい年
+     * @param bool $getCategory カテゴリー取得するか否かのスイッチ用
      * @return object|null
      */
-    public static function getWithPaymentSum(string $userId, string $year = ''): ?object
+    public static function getWithPaymentSum(string $userId, string $year = '', bool $getCategory = false): ?object
     {
-        return self::with(['paymentSum' => function ($query) use ($year) {
-            if ($year === '') {
-                $query->yearDesc()
-                    ->monthDesc();
-            } else {
-                $query->ofYear($year)
-                    ->yearDesc()
-                    ->monthDesc();
+        $func = [
+            'paymentSum' => function ($query) use ($year) {
+                if ($year === '') {
+                    $query->yearDesc()
+                        ->monthDesc();
+                } else {
+                    $query->ofYear($year)
+                        ->yearDesc()
+                        ->monthDesc();
+                }
             }
-        }])
-            ->ofId($userId)
-            ->first();
+        ];
+
+        if ($getCategory) {
+            $func = Arr::add($func, 'categories', function ($query) {
+                $query->idAsc();
+            });
+        }
+
+        return self::with($func)->ofId($userId)->first();
     }
 
     /**
