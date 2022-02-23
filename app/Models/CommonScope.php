@@ -64,7 +64,7 @@ trait CommonScope
     }
 
     /**
-     * 特定のidのみを含むようにクエリのスコープを設定
+     * 特定のuser_idのみを含むようにクエリのスコープを設定
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param mixed $userId
@@ -73,6 +73,18 @@ trait CommonScope
     public function scopeOfUserId($query, $userId)
     {
         return $query->where('user_id', $userId);
+    }
+
+    /**
+     * 特定のcategory_idのみを含むようにクエリのスコープを設定
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $userId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfCategoryId($query, $userId)
+    {
+        return $query->where('category_id', $userId);
     }
 
     /**

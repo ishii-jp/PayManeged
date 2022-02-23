@@ -83,7 +83,7 @@ class UserTest extends TestCase
      */
     public function getWithPaymentSum_第2引数が指定されるかつ指定された年がDBに存在しない場合空のコレクションが返ってくること()
     {
-        $user = User::factory()->has(PaymentSum::factory()->count(10))->create();
+        $user = User::factory()->has(PaymentSum::factory()->count(1))->create();
 
         $result = User::getWithPaymentSum($user->id, '100');
         $this->assertSame(0, $result->paymentSum->count());
@@ -98,14 +98,7 @@ class UserTest extends TestCase
 
         $result = User::getWithPaymentSum($user->id, '', true);
 
-        array_reduce(
-            $result->categories->toArray(),
-            function ($carry, $item) {
-                // idが昇順ソートされていることをテスト
-                self::assertTrue($carry < $item);
-            },
-            0
-        );
+        $this->assertArrSortAsc($result->categories->toArray());
     }
 
     /**
@@ -188,5 +181,55 @@ class UserTest extends TestCase
             $this->assertSame(Arr::get($facPayments, "{$key}.created_at"), Arr::get($payment, 'created_at'));
             $this->assertSame(Arr::get($facPayments, "{$key}.updated_at"), Arr::get($payment, 'updated_at'));
         }
+    }
+
+    /**
+     * @test
+     */
+    public function getWithPaymentsByCategoryId_指定したuserIdのusersテーブルとcategoryIdで絞ったpaymentsリレーションの値が取得できること()
+    {
+        $categoryId = '1';
+        $user = User::factory()->has(Payment::factory(['category_id' => $categoryId])->count(2))->create();
+
+        $result = User::getWithPaymentsByCategoryId($user->id, $categoryId);
+
+        $this->assertArrSortAsc($result->payments->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function getWithPaymentsByCategoryId_指定したuserIdが存在しない場合nullを返すること()
+    {
+        self::assertNull(User::getWithPaymentsByCategoryId('999999', '999999'));
+    }
+
+    /**
+     * @test
+     */
+    public function getWithPaymentsByCategoryId_存在しないcategoryIdが指定されたらnull()
+    {
+        $user = User::factory()->has(Payment::factory(['category_id' => '1'])->count(3))->create();
+
+        $result = User::getWithPaymentsByCategoryId($user->id, '99999999');
+
+        self::assertTrue($result->payments->isEmpty());
+    }
+
+    /**
+     * 配列の要素を前後で確認し昇順ソートされていることをテストします。
+     *
+     * @param array $arr テスト対象の配列
+     */
+    private function assertArrSortAsc(array $arr): void
+    {
+        array_reduce(
+            $arr,
+            function ($carry, $item) {
+                // idが昇順ソートされていることをテスト
+                $this->assertTrue($carry < $item);
+            },
+            0
+        );
     }
 }

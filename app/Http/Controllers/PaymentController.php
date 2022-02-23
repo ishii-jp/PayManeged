@@ -43,6 +43,23 @@ class PaymentController extends Controller
     }
 
     /**
+     * カテゴリ別支払い履歴画面
+     * [GET] /payment/history/category
+     *
+     * @param User $user メソッドインジェクション
+     * @param string $categoryId カテゴリーID
+     * @return View
+     */
+    public function historyByCategory(User $user, string $categoryId): View
+    {
+        return view('payments.history_category')
+            ->with([
+                'users' => $user->getWithPaymentsByCategoryId(Auth::id(), $categoryId),
+                'categoryId' => $categoryId
+            ]);
+    }
+
+    /**
      * 支払い履歴グラフ画面
      * [GET] /payment/history/graph
      *

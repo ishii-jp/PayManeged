@@ -15,6 +15,7 @@
         @if(count($users->payments) === 0)
             @include('elements.alert', ['errorMessage' => '支払い履歴詳細の取得に失敗しました'])
         @else
+            <p>カテゴリー名をクリックすることでカテゴリーごとの支払い履歴が確認できます。</p>
             <table class="table">
                 <thead>
                 <tr>
@@ -26,7 +27,11 @@
                 @foreach($users->payments as $payment)
                     <tbody>
                     <tr>
-                        <td>{{ \App\Models\Category::getCategoryName($payment->category_id, Auth::id()) }}</td>
+                        <td>
+                            <a href="{{ route('payment.history.category', ['categoryId' => $payment->category_id]) }}">
+                                {{ \App\Models\Category::getCategoryName($payment->category_id, Auth::id()) }}
+                            </a>
+                        </td>
                         <td>¥{{ \App\Utils\FormatUtil::numberFormat($payment->price) }}</td>
                         <td>{{ $payment->updated_at }}</td>
                     </tr>

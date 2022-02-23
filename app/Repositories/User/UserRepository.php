@@ -45,4 +45,16 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::getWithPaymentsAndSum($userId, $year, $month);
     }
+
+    /**
+     * 指定したユーザー情報と指定のカテゴリーidに合致するpaymentsリレーションを一緒に取得します
+     *
+     * @param string $userId 取得したいユーザーID
+     * @param string $categoryId 取得したいカテゴリーID
+     * @return object|null
+     */
+    public function getWithPaymentsByCategoryId(string $userId, string $categoryId): ?object
+    {
+        return user::getWithPaymentsByCategoryId($userId, $categoryId);
+    }
 }
