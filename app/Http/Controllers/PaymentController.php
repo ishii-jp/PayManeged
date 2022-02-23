@@ -38,7 +38,8 @@ class PaymentController extends Controller
      */
     public function history(User $user): View
     {
-        return view('payments.history')->with('users', $user->getUserWithPaymentSum(Auth::id()));
+        return view('payments.history')
+            ->with('users', $user->getUserWithPaymentSum(Auth::id(), '', true));
     }
 
     /**
