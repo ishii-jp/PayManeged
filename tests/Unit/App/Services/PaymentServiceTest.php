@@ -235,6 +235,23 @@ class PaymentServiceTest extends TestCase
 
     /**
      * @test
+     */
+    public function getMonthlyPaymentSum_retPaymentをtrueにした場合12ヶ月分全てデータがある場合返り値配列の要素全てにデータが入っていること()
+    {
+        $price = 50000;
+        for ($n = 1; $n < 13; $n++) {
+            Payment::factory()->create(['month' => $n, 'price' => $price]);
+            $price++;
+        }
+
+        $argObj = Payment::all();
+        $expected = [50000, 50001, 50002, 50003, 50004, 50005, 50006, 50007, 50008, 50009, 50010, 50011];
+
+        self::assertSame($expected, PaymentService::getMonthlyPaymentSum($argObj, true));
+    }
+
+    /**
+     * @test
      * @dataProvider sendNotificationDataProvider
      */
     public function sendNotification_期待通りにメールを送り分けていること(

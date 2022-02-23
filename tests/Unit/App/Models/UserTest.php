@@ -217,6 +217,45 @@ class UserTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function getWithPaymentsByCategoryId_yearを設定した場合設定したyearのデータを取得できること()
+    {
+        $categoryId = '1';
+        $year = '2022';
+        // 取得できちゃいけないレコードを作成
+        User::factory()->has(Payment::factory(['category_id' => $categoryId, 'year' => '2021']))->create();
+        User::factory()->has(Payment::factory(['category_id' => $categoryId, 'year' => '2020']))->create();
+        // 取得できなきゃいけないレコードを作成
+        $user = User::factory()
+            ->has(Payment::factory(['category_id' => $categoryId, 'year' => $year])->count(2))
+            ->create();
+
+        $result = User::getWithPaymentsByCategoryId($user->id, $categoryId, $year);
+
+        // $year年度のものしか取得されていないことのテスト
+        $result->payments->map(function ($item) use ($year) {
+            self::assertTrue($item->year === (int)$year);
+        });
+
+        // ソートのテスト
+        $this->assertArrSortAsc($result->payments->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function getWithPaymentsByCategoryId_yearを設定した場合かつ存在しないyearの場合空コレクションが返ってくること()
+    {
+        $categoryId = '1';
+        $user = User::factory()->has(Payment::factory(['category_id' => $categoryId, 'year' => '2022']))->create();
+
+        $result = User::getWithPaymentsByCategoryId($user->id, $categoryId, '2020');
+
+        self::assertTrue($result->payments->isEmpty());
+    }
+
+    /**
      * 配列の要素を前後で確認し昇順ソートされていることをテストします。
      *
      * @param array $arr テスト対象の配列

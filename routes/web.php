@@ -34,6 +34,7 @@ Route::prefix('payment')->group(function () {
     Route::get('/history', [PaymentController::class, 'history'])->name('payment.history');
     Route::get('/history/category/{categoryId}', [PaymentController::class, 'historyByCategory'])->name('payment.history.category');
     Route::get('/history/graph', [PaymentController::class, 'graph'])->name('payment.history.graph');
+    Route::get('/history/graph/category', [PaymentController::class, 'graphByCategory'])->name('payment.history.graph.category');
     Route::get('/history/detail/{year}/{month}', [PaymentController::class, 'detail'])->name('payment.detail');
     Route::get('/notification/{year}/{month}', [PaymentController::class, 'notification'])->name('payment.notification');
     Route::post('/notification/{year}/{month}', [PaymentController::class, 'notificationPost'])->name('payment.notificationPost');

@@ -10,5 +10,5 @@ interface UserRepositoryInterface
 
     public function getUserWithPaymentsAndSum(string $userId, string $year, string $month): ?object;
 
-    public function getWithPaymentsByCategoryId(string $userId, string $categoryId): ?object;
+    public function getWithPaymentsByCategoryId(string $userId, string $categoryId, string $year = ''): ?object;
 }

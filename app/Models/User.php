@@ -120,17 +120,26 @@ class User extends Authenticatable
 
     /**
      * 指定したユーザー情報と指定のカテゴリーidに合致するpaymentsリレーションを一緒に取得します
+     * なお、第3引数に年を指定した場合は指定した年のpaymentsを取得します
      *
      * @param string $userId 取得したいユーザーID
      * @param string $categoryId 取得したいカテゴリーID
+     * @param string $year 取得したい年度
      * @return object|null
      */
-    public static function getWithPaymentsByCategoryId(string $userId, string $categoryId): ?object
+    public static function getWithPaymentsByCategoryId(string $userId, string $categoryId, string $year = ''): ?object
     {
-        return self::with(['payments' => function ($query) use ($categoryId) {
-            $query->ofCategoryId($categoryId)
-                ->yearDesc()
-                ->monthDesc();
+        return self::with(['payments' => function ($query) use ($categoryId, $year) {
+            if ($year === '') {
+                $query->ofCategoryId($categoryId)
+                    ->yearDesc()
+                    ->monthDesc();
+            } else {
+                $query->ofCategoryId($categoryId)
+                    ->ofYear($year)
+                    ->yearDesc()
+                    ->monthDesc();
+            }
         }])
             ->ofId($userId)
             ->first();

@@ -44,7 +44,7 @@ class PaymentController extends Controller
 
     /**
      * カテゴリ別支払い履歴画面
-     * [GET] /payment/history/category
+     * [GET] /payment/history/category/{categoryId}
      *
      * @param User $user メソッドインジェクション
      * @param string $categoryId カテゴリーID
@@ -69,8 +69,40 @@ class PaymentController extends Controller
      */
     public function graph(Request $request, User $user): View
     {
-        $reqUsers = $user->getUserWithPaymentSum(Auth::id(), $request->query('year') ?? PaymentService::getNowYear());
-        return view('payments.history_graph')->with('paymentSumList', PaymentService::getMonthlyPaymentSum($reqUsers->paymentSum));
+        $reqUsers = $user->getUserWithPaymentSum(
+            Auth::id(),
+            $request->query('year') ?? PaymentService::getNowYear()
+        );
+
+        return view('payments.history_graph')
+            ->with('paymentSumList', PaymentService::getMonthlyPaymentSum($reqUsers->paymentSum));
+    }
+
+    /**
+     * カテゴリ別支払い履歴グラフ画面
+     * [GET] /payment/history/graph/category
+     *
+     * @param Request $request
+     * @param User $user
+     * @return View
+     */
+    public function graphByCategory(Request $request, User $user): View
+    {
+        $categoryId = $request->query('categoryId');
+
+        // カテゴリーID未設定のリクエストはエラーにします。
+        abort_if(is_null($categoryId), 500);
+
+        $reqUsers = $user->getWithPaymentsByCategoryId(
+            Auth::id(),
+            $categoryId,
+            $request->query('year') ?? PaymentService::getNowYear()
+        );
+
+        return view('payments.history_graph_category')->with([
+            'paymentsList' => PaymentService::getMonthlyPaymentSum($reqUsers->payments, true),
+            'categoryId' => $categoryId
+        ]);
     }
 
     /**

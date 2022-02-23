@@ -51,10 +51,11 @@ class UserRepository implements UserRepositoryInterface
      *
      * @param string $userId 取得したいユーザーID
      * @param string $categoryId 取得したいカテゴリーID
+     * @param string $year 取得したい年度
      * @return object|null
      */
-    public function getWithPaymentsByCategoryId(string $userId, string $categoryId): ?object
+    public function getWithPaymentsByCategoryId(string $userId, string $categoryId, string $year = ''): ?object
     {
-        return user::getWithPaymentsByCategoryId($userId, $categoryId);
+        return user::getWithPaymentsByCategoryId($userId, $categoryId, $year);
     }
 }

@@ -104,16 +104,17 @@ class PaymentService
      * 未入力でデータがpaymentSumsに入っていない月は0をセットします。
      *
      * @param object $paymentSums 任意の年のpayment_sumsコレクション
+     * @param bool $retPayment paymentテーブルの取得結果で使用する場合にtrueにしてください。
      * @return array 12ヶ月分の配列
      */
-    public static function getMonthlyPaymentSum(object $paymentSums): array
+    public static function getMonthlyPaymentSum(object $paymentSums, bool $retPayment = false): array
     {
         $monthlyCollect = collect([]);
 
         for ($num = 1; $num < 13; $num++) {
             if ($paymentSums->contains('month', $num)) {
-                $price = $paymentSums->where('month', $num)->map(function ($item) {
-                    return $item->total_price;
+                $price = $paymentSums->where('month', $num)->map(function ($item) use ($retPayment) {
+                    return $retPayment ? $item->price : $item->total_price;
                 });
                 $monthlyCollect->push($price->shift());
             } else {
@@ -143,7 +144,8 @@ class PaymentService
         string  $paymentSum,
         array   $payments,
         ?string $numOfPeople
-    ): void {
+    ): void
+    {
         // 変動費(入力値)と固定費の合計を計算
         $totalAmount = self::calcPaySum($paymentSum, config('const.fixed_cost'));
 
