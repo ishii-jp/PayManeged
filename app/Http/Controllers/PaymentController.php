@@ -160,7 +160,7 @@ class PaymentController extends Controller
                 $month,
                 Arr::get($validated, 'paymentSum'),
                 Arr::get($validated, 'payment'),
-                Arr::get($validated, 'numOfPeople')
+                Arr::get($validated, 'peopleNum')
             );
         } catch (Exception | TypeError $e) {
             report($e);
