@@ -147,6 +147,8 @@ class PaymentService
     ): void
     {
         // 変動費(入力値)と固定費の合計を計算
+        // TODO fixed_costの値に固定費の総額を渡さないと一人当たりの支払い合計金額がおかしくなる。
+        // configを要修正
         $totalAmount = self::calcPaySum($paymentSum, config('const.fixed_cost'));
 
         // メール送信
