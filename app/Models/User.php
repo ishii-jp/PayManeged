@@ -171,4 +171,20 @@ class User extends Authenticatable
             ->ofId($userId)
             ->first();
     }
+
+    /**
+     * userテーブルをアップデートします。
+     *
+     * @param User $user ユーザークラスインスタンス
+     * @param string $name 名前
+     * @param string $email メールアドレス
+     * @return void
+     * @TODO ユニットテスト未実施
+     */
+    public static function updateUser(User $user, string $name, string $email): void
+    {
+        $user->name = $name;
+        $user->email = $email;
+        $user->save();
+    }
 }

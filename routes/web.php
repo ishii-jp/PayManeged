@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MyPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,10 @@ Route::prefix('payment')->group(function () {
     Route::get('/{year}/{month}', [PaymentController::class, 'index'])->name('payment');
     Route::post('/{year}/{month}/confirm', [PaymentController::class, 'confirm'])->name('payment.confirm');
     Route::post('/{year}/{month}/complete', [PaymentController::class, 'complete'])->name('payment.complete');
+});
+
+Route::prefix('mypage')->group(function () {
+    Route::get('/', [MyPageController::class, 'index'])->name('mypage');
+    Route::get('/user', [MyPageController::class, 'user'])->name('mypage.user');
+    Route::post('/user_edit', [MyPageController::class, 'userEdit'])->name('mypage.userEdit');
 });
