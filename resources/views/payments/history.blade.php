@@ -4,7 +4,6 @@
     $title = '支払い履歴画面';
 @endphp
 
-
 @section('title', $title)
 
 @section('content')
