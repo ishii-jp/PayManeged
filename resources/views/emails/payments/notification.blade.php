@@ -16,4 +16,4 @@
 
 変動費と固定費の合計金額 ： ¥{{ FormatUtil::numberFormat($totalAmount) }}<br>
 
-1人あたり支払い合計金額 ： ¥{{ FormatUtil::numberFormat($calcResult) }}
+{{ $numOfPeople }}人で割り勘した場合、1人あたり支払い合計金額 ： ¥{{ FormatUtil::numberFormat($calcResult) }}

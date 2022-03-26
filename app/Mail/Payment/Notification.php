@@ -14,6 +14,14 @@ class Notification extends Mailable
     /**
      * Create a new message instance.
      *
+     * @param string $name
+     * @param string $year
+     * @param string $month
+     * @param array $payments
+     * @param string $paymentSum
+     * @param string|null $totalAmount
+     * @param string|null $calcResult
+     * @param string $numOfPeople
      * @return void
      */
     public function __construct(
@@ -23,9 +31,9 @@ class Notification extends Mailable
         public array   $payments,
         public string  $paymentSum,
         public ?string $totalAmount,
-        public ?string $calcResult
-    )
-    {
+        public ?string $calcResult,
+        public string  $numOfPeople
+    ) {
     }
 
     /**
