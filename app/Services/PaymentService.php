@@ -37,7 +37,6 @@ class PaymentService
      * @param array|null $payment
      * @param string|null $paymentSum
      * @throws Exception|TypeError
-     * @todo ハンドリング側でreport()するとエラーログが重複するので、キャッチブロックのreport()を削除する
      */
     public static function allRegister(
         string  $year,
