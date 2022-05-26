@@ -26,8 +26,6 @@ class SendEmailNotification
      *
      * @param InputPaymentCompleted $event
      * @return void
-     * @TODO 暫定対応でnumOfPeopleの引数をハードコーディングしているが、
-     * calcPayPerPerson()の引数デフォ値と一緒に定数にして呼び出す様修正する。
      */
     public function handle(InputPaymentCompleted $event)
     {
@@ -40,7 +38,7 @@ class SendEmailNotification
                     $event->paymentSum,
                     $event->totalAmount,
                     $event->calcResult,
-                    '2'
+                    config('const.defaultNumOfPeople')
                 )
             );
         } catch (Exception $e) {

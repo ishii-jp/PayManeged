@@ -65,10 +65,14 @@ class PaymentService
      * @param string $num 割りたい人数 デフォルト：2
      * @return string|null $number人当たりの支払い金額 小数点以下切り上げ
      */
-    public static function calcPayPerPerson(?string $paymentSum, string $num = '2'): ?string
+    public static function calcPayPerPerson(?string $paymentSum, string $num = ''): ?string
     {
         if (is_null($paymentSum)) {
             return null;
+        }
+
+        if ($num === '') {
+            $num = config('const.defaultNumOfPeople');
         }
 
         if (is_numeric($num)) {
