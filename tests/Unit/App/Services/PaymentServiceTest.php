@@ -142,7 +142,7 @@ class PaymentServiceTest extends TestCase
      * メソッドの返り値がdataproviderの期待値通りであることのテスト
      *
      * @param string|null $paymentSum
-     * @param string $retVal
+     * @param string|null $retVal
      * @return void
      * @dataProvider calcPayPerPersonDataProvider
      */
