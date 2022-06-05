@@ -13,7 +13,7 @@ $title = 'ユーザー情報編集画面';
     <form method="POST" action="{{ route('mypage.userEdit') }}">
         @csrf
         <div class="form-group">
-            <label for="name">メールアドレス</label>
+            <label for="name">名前</label>
             <input type="text" class="form-control" name="userName" id="name" value="{{ $user->name }}" required>
             <label for="email">メールアドレス</label>
             <input type="email" class="form-control" name="userEmail" id="email" value="{{ $user->email }}" required>
