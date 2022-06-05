@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
+use App\Http\Requests\MypagePostRequest;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use TypeError;
 
 class MyPageController extends Controller
 {
@@ -35,6 +38,7 @@ class MyPageController extends Controller
      * ユーザー情報編集画面
      * [GET] /mypage/user
      *
+     * @param Request $request
      * @return View
      */
     public function user(Request $request): View
@@ -46,15 +50,16 @@ class MyPageController extends Controller
      * ユーザー情報編集画面
      * [POST] /mypage/user_edit
      *
-     * @TODO フォームリクエストバリデーションを実装する
+     * @param MypagePostRequest $request
      * @return RedirectResponse
      */
-    public function userEdit(Request $request): View
+    public function userEdit(MypagePostRequest $request): View
     {
-        // 後にフォームリクエストバリデーションを実装するのでフォーム入力値の確認はここではしないです。
+        $validated = $request->validated();
+
         try {
-            User::updateUser($request->user(), $request->get('userName'), $request->get('userEmail'));
-        } catch (Exception $e) {
+            User::updateUser($request->user(), Arr::get($validated, 'userName'), Arr::get($validated, 'userEmail'));
+        } catch (Exception | TypeError $e) {
             report($e);
         }
 
