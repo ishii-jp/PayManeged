@@ -55,17 +55,20 @@ class MyPageController extends Controller
      */
     public function userEdit(MypagePostRequest $request): View
     {
+        $message = '';
         $validated = $request->validated();
 
         try {
             User::updateUser($request->user(), Arr::get($validated, 'userName'), Arr::get($validated, 'userEmail'));
+            $message = '編集しました。';
         } catch (Exception | TypeError $e) {
             report($e);
+            $message = '編集に失敗しました。';
         }
 
         return view('mypages.user')->with([
             'user' => $request->user(),
-            'message' => '編集しました。'
+            'message' => $message
         ]);
     }
 }
