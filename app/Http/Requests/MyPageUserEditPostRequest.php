@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @TODO ユニットテスト未実施クラス(ブラウザでの動作確認は済み)
  */
-class MypagePostRequest extends FormRequest
+class MyPageUserEditPostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

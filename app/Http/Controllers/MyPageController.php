@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Arr;
-use App\Http\Requests\MypagePostRequest;
+use App\Http\Requests\MyPageUserEditPostRequest;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -50,10 +50,10 @@ class MyPageController extends Controller
      * ユーザー情報編集画面
      * [POST] /mypage/user_edit
      *
-     * @param MypagePostRequest $request
+     * @param MyPageUserEditPostRequest $request
      * @return RedirectResponse
      */
-    public function userEdit(MypagePostRequest $request): View
+    public function userEdit(MyPageUserEditPostRequest $request): View
     {
         $message = '';
         $validated = $request->validated();
