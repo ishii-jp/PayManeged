@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use App\Http\Requests\MyPageUserEditPostRequest;
 use Exception;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use TypeError;
