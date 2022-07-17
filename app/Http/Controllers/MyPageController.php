@@ -71,4 +71,22 @@ class MyPageController extends Controller
             'message' => $message
         ]);
     }
+
+    /**
+     * ユーザー一覧画面
+     * [GET] /mypage/user_show
+     *
+     * @return View
+     */
+    public function userShow(): View
+    {
+        // TODO 本来はusersテーブルに管理者か一般か判定するフラグを作成しアクセス可否を判定する。
+        // 現状判定するカラムがないので、カラム作成後に対応する。
+        // abort(404);
+
+        // TODO コントローラで直接all()を呼び出さずモデルに書いてUTを実施するように修正する。
+        $users = User::all();
+
+        return view('mypages.user_show')->with('users', $users);
+    }
 }
