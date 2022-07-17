@@ -51,7 +51,7 @@ class MyPageController extends Controller
      * [POST] /mypage/user_edit
      *
      * @param MyPageUserEditPostRequest $request
-     * @return RedirectResponse
+     * @return View
      */
     public function userEdit(MyPageUserEditPostRequest $request): View
     {
