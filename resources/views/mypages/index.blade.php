@@ -18,6 +18,8 @@ $title = 'マイページ画面';
                 <div class="card-body">
                     <ul class="list-group">
                         <li class="list-group-item"><a href="{{ route('mypage.user') }}">ユーザー情報編集</a></li>
+                        {{-- TODO ユーザー一覧への動線は管理者なら表示、一般なら非表示という風に出し分ける様後に修正する。 --}}
+                        <li class="list-group-item"><a href="{{ route('mypage.userShow') }}">ユーザー一覧</a></li>
                         <li class="list-group-item"><a href="#">パスワード編集</a></li>
                     </ul>
                 </div>

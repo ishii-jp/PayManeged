@@ -31,4 +31,5 @@ $title = 'ユーザー一覧画面';
     </tbody>
     @endforeach
 </table>
+<a href="{{ route('mypage') }}">マイページに戻る</a>
 @endsection
