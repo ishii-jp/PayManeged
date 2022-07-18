@@ -50,4 +50,6 @@ Route::prefix('mypage')->group(function () {
     Route::get('/user', [MyPageController::class, 'user'])->name('mypage.user');
     Route::post('/user_edit', [MyPageController::class, 'userEdit'])->name('mypage.userEdit');
     Route::get('/user_show', [MyPageController::class, 'userShow'])->name('mypage.userShow');
+    Route::get('/password_change', [MyPageController::class, 'getPasswordChange'])->name('mypage.getPasswordChange');
+    Route::post('/password_change', [MyPageController::class, 'postPasswordChange'])->name('mypage.postPasswordChange');
 });

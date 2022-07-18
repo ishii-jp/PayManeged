@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\MyPageUserEditPostRequest;
 use Exception;
 use App\Models\User;
+use App\Http\Requests\PasswordChangeRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use TypeError;
 
@@ -87,5 +91,49 @@ class MyPageController extends Controller
         $users = User::all();
 
         return view('mypages.user_show')->with('users', $users);
+    }
+
+    /**
+     * パスワード編集画面
+     * [GET] /mypage/password_change
+     *
+     * @return View
+     */
+    public function getPasswordChange(Request $request): View
+    {
+        $message = $request->session()->get('redirectMessage', null);
+
+        if (is_null($message)) {
+            return view('mypages.password_change');
+        } else {
+            return view('mypages.password_change')->with('message', $message);
+        }
+    }
+
+    /**
+     * パスワード編集
+     * [POST] /mypage/password_change
+     *
+     * @param PasswordChangeRequest $request
+     * @return RedirectResponse
+     */
+    public function postPasswordChange(PasswordChangeRequest $request): RedirectResponse
+    {
+        $redirectMessage = 'パスワードが変更されました。';
+        $validated = $request->validated();
+
+        try {
+            // TODO 下記の処理はUserモデルに書いてUTを実施する様修正する。
+            // パスワードをDBにアップデート
+            $user = User::find(Auth::id());
+            $user->password = Hash::make(Arr::get($validated, 'newPassword'));
+            $user->save();
+        } catch (Exception $e) {
+            report($e);
+            $redirectMessage = 'システムエラーが発生しました。 お手数ですがもう1度最初からお願いします。';
+        }
+
+        // メッセージをレスポンスに渡してリダイレクト
+        return redirect(route('mypage.getPasswordChange'))->with('redirectMessage', $redirectMessage);
     }
 }
